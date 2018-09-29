@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { getProductos } from "../../actions/productosActions";
 
 class Productos extends Component {
-  componentdidMount() {
+  componentDidMount() {
     this.props.getProductos();
   }
 
