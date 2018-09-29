@@ -9,8 +9,8 @@ class AppNavbar extends Component {
           <Link to="/" className="navbar-brand">
             paStock
           </Link>
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
+          <ul className="navbar-nav mr-auto">
+            <li className="nav-item">
               <Link to="/producto" className="nav-link">
                 Stock
               </Link>

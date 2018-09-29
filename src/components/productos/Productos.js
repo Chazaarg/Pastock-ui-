@@ -9,31 +9,36 @@ class Productos extends Component {
         nombre: "Better Than Sex",
         marca: "Too Faced",
         precio: 100,
-        cantidad: 6
+        cantidad: 6,
+        categoria: "Rostro"
       },
       {
-        id: 123,
+        id: 1234,
         nombre: "Lipstick",
         marca: "MAC",
         precio: 100,
         cantidad: 6,
         variantes: [
           {
+            id: 333,
             nombre: "Pink",
             cantidad: 2,
             precio: 200
           },
           {
+            id: 334,
             nombre: "Chick",
             cantidad: 3,
             precio: 250
           },
           {
+            id: 335,
             nombre: "Buba",
             cantidad: 2,
             precio: 200
           }
-        ]
+        ],
+        categoria: "Labios"
       }
     ];
 
@@ -52,6 +57,7 @@ class Productos extends Component {
                 <th>Precio</th>
                 <th>Cantidad</th>
                 <th>Variante</th>
+                <th>Categoria</th>
                 <th />
                 <th />
               </tr>
@@ -65,29 +71,37 @@ class Productos extends Component {
                     <React.Fragment>
                       <td>
                         {producto.variantes.map(variante => (
-                          <React.Fragment>
-                            <tr>
-                              <td>${parseFloat(variante.precio).toFixed(2)}</td>
-                            </tr>
-                          </React.Fragment>
+                          <table key={variante.id}>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  ${parseFloat(variante.precio).toFixed(2)}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
                         ))}
                       </td>
                       <td>
                         {producto.variantes.map(variante => (
-                          <React.Fragment>
-                            <tr>
-                              <td>{variante.cantidad}</td>
-                            </tr>
-                          </React.Fragment>
+                          <table key={variante.id}>
+                            <tbody>
+                              <tr>
+                                <td>{variante.cantidad}</td>
+                              </tr>
+                            </tbody>
+                          </table>
                         ))}
                       </td>
                       <td>
                         {producto.variantes.map(variante => (
-                          <React.Fragment>
-                            <tr>
-                              <td>{variante.nombre}</td>
-                            </tr>
-                          </React.Fragment>
+                          <table key={variante.id}>
+                            <tbody>
+                              <tr>
+                                <td>{variante.nombre}</td>
+                              </tr>
+                            </tbody>
+                          </table>
                         ))}
                       </td>
                     </React.Fragment>
@@ -98,6 +112,7 @@ class Productos extends Component {
                       <td />
                     </React.Fragment>
                   )}
+                  <td>{producto.categoria}</td>
                   <td>
                     <Link
                       to={`/producto/${producto.id}`}
