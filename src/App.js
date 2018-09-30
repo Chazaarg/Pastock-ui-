@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import AppNavbar from "./components/layout/AppNavbar";
 import Stock from "./components/layout/Stock";
+import ShowProducto from "./components/productos/ShowProducto";
 
 import store from "./store";
 
@@ -18,6 +19,7 @@ class App extends Component {
             <div className="container">
               <Switch>
                 <Route exact path="/producto" component={Stock} />
+                <Route exact path="/producto/:id" component={ShowProducto} />
               </Switch>
             </div>
           </div>

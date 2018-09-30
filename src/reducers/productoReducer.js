@@ -1,7 +1,8 @@
-import { FETCH_PRODUCTOS } from "../actions/types.js";
+import { FETCH_PRODUCTOS, FETCH_PRODUCTO } from "../actions/types.js";
 
 const initState = {
-  productos: []
+  productos: [],
+  producto: {}
 };
 
 export default function(state = initState, action) {
@@ -10,6 +11,11 @@ export default function(state = initState, action) {
       return {
         ...state,
         productos: action.payload
+      };
+    case FETCH_PRODUCTO:
+      return {
+        ...state,
+        producto: action.payload
       };
 
     default:

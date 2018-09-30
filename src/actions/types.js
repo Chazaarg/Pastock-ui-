@@ -1,1 +1,2 @@
 export const FETCH_PRODUCTOS = "FETCH_PRODUCTOS";
+export const FETCH_PRODUCTO = "FETCH_PRODUCTO";
