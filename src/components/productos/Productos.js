@@ -79,7 +79,12 @@ class Productos extends Component {
                     <td />
                   </React.Fragment>
                 )}
-                <td>{producto.categoria}</td>
+                <td>
+                  {producto.categoria}{" "}
+                  {producto.sub_categoria
+                    ? "> " + producto.sub_categoria
+                    : null}
+                </td>
                 <td>
                   <Link
                     to={`/producto/${producto.id}`}
