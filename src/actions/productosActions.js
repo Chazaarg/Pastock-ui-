@@ -1,4 +1,9 @@
-import { FETCH_PRODUCTOS, FETCH_PRODUCTO } from "./types";
+import {
+  FETCH_PRODUCTOS,
+  FETCH_PRODUCTO,
+  FETCH_MARCAS,
+  FETCH_CATEGORIAS
+} from "./types";
 import axios from "axios";
 
 export const getProductos = () => async dispatch => {
@@ -6,6 +11,24 @@ export const getProductos = () => async dispatch => {
 
   dispatch({
     type: FETCH_PRODUCTOS,
+    payload: res.data
+  });
+};
+
+export const getCategorias = () => async dispatch => {
+  const res = await axios.get("/categoria");
+
+  dispatch({
+    type: FETCH_CATEGORIAS,
+    payload: res.data
+  });
+};
+
+export const getMarcas = () => async dispatch => {
+  const res = await axios.get("/marca");
+
+  dispatch({
+    type: FETCH_MARCAS,
     payload: res.data
   });
 };
