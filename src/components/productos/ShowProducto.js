@@ -148,13 +148,14 @@ class ShowProducto extends Component {
         )}
         <div className="row-12 mt-5 pt-5">
           <hr />
-          {producto.created_at && producto.updated_at ? (
-            <p className="float-left">
+          {//Este IF quizás no esté cuando espere a que se hagan las querys para renderizar.
+          producto.created_at && producto.updated_at ? (
+            <p className="float-left text-secondary">
               <small>
-                Creado en
+                Fecha de creación:
                 {" " + producto.created_at.date.substring(0, 16) + " "}
                 <br />
-                Actualizado en
+                Última edición:
                 {" " + producto.updated_at.date.substring(0, 16) + " "}
               </small>
             </p>

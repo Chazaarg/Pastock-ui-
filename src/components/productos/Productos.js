@@ -87,7 +87,7 @@ class Productos extends Component {
                 </td>
                 <td>
                   <Link
-                    to={`/producto/${producto.id}`}
+                    to={`/producto/${producto.id}/show`}
                     className="btn btn-secondary"
                   >
                     Detalles

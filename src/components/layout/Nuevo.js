@@ -5,8 +5,7 @@ class Nuevo extends Component {
   render() {
     return (
       <Link to="producto/new" className="btn btn-success btn-block">
-        <i className="fas fa-plus" />
-        Nuevo
+        <i className="fas fa-plus" /> Nuevo
       </Link>
     );
   }
