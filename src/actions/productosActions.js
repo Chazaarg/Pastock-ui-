@@ -2,7 +2,8 @@ import {
   FETCH_PRODUCTOS,
   FETCH_PRODUCTO,
   FETCH_MARCAS,
-  FETCH_CATEGORIAS
+  FETCH_CATEGORIAS,
+  FETCH_SUBCATEGORIAS
 } from "./types";
 import axios from "axios";
 
@@ -20,6 +21,14 @@ export const getCategorias = () => async dispatch => {
 
   dispatch({
     type: FETCH_CATEGORIAS,
+    payload: res.data
+  });
+};
+export const getSubcategorias = () => async dispatch => {
+  const res = await axios.get("/subcategoria");
+
+  dispatch({
+    type: FETCH_SUBCATEGORIAS,
     payload: res.data
   });
 };

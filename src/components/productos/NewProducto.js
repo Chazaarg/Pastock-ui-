@@ -1,13 +1,18 @@
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getMarcas, getCategorias } from "../../actions/productosActions";
+import {
+  getMarcas,
+  getCategorias,
+  getSubcategorias
+} from "../../actions/productosActions";
 import React, { Component } from "react";
 
 class NewProducto extends Component {
   componentDidMount() {
     this.props.getMarcas();
     this.props.getCategorias();
+    this.props.getSubcategorias();
   }
 
   state = {
@@ -28,10 +33,11 @@ class NewProducto extends Component {
     console.log(this.state);
   };
 
-  onChange = e =>
+  onChange = e => {
     this.setState({
       [e.target.name]: e.target.value
     });
+  };
 
   render() {
     const {
@@ -45,7 +51,7 @@ class NewProducto extends Component {
       sub_categoria
     } = this.state;
 
-    const { categorias, marcas } = this.props;
+    const { categorias, marcas, subcategorias } = this.props;
 
     return (
       <div>
@@ -110,11 +116,21 @@ class NewProducto extends Component {
                     onChange={this.onChange}
                   >
                     <option>Elige una sub categoría...</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
+                    {categoria !== ""
+                      ? subcategorias
+                          .filter(
+                            subcategoria =>
+                              subcategoria.categoria === parseInt(categoria, 0)
+                          )
+                          .map(subcategoria => (
+                            <option
+                              key={subcategoria.id}
+                              value={subcategoria.id}
+                            >
+                              {subcategoria.nombre}
+                            </option>
+                          ))
+                      : null}
                   </select>
                 </div>
               </div>
@@ -220,6 +236,7 @@ class NewProducto extends Component {
               <div className="card-header" id="headingTwo">
                 <h5 className="mb-0">
                   <button
+                    type="button"
                     className="btn btn-link collapsed"
                     data-toggle="collapse"
                     data-target="#collapseTwo"
@@ -269,15 +286,17 @@ class NewProducto extends Component {
 
 NewProducto.propTypes = {
   categorias: PropTypes.array.isRequired,
-  marcas: PropTypes.array.isRequired
+  marcas: PropTypes.array.isRequired,
+  subcategorias: PropTypes.array.isRequired
 };
 
 const mapStateToProps = state => ({
   categorias: state.producto.categorias,
-  marcas: state.producto.marcas
+  marcas: state.producto.marcas,
+  subcategorias: state.producto.subcategorias
 });
 
 export default connect(
   mapStateToProps,
-  { getMarcas, getCategorias }
+  { getMarcas, getCategorias, getSubcategorias }
 )(NewProducto);

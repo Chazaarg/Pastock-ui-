@@ -2,14 +2,16 @@ import {
   FETCH_PRODUCTOS,
   FETCH_PRODUCTO,
   FETCH_MARCAS,
-  FETCH_CATEGORIAS
+  FETCH_CATEGORIAS,
+  FETCH_SUBCATEGORIAS
 } from "../actions/types.js";
 
 const initState = {
   productos: [],
   producto: {},
   marcas: [],
-  categorias: []
+  categorias: [],
+  subcategorias: []
 };
 
 export default function(state = initState, action) {
@@ -33,6 +35,11 @@ export default function(state = initState, action) {
       return {
         ...state,
         categorias: action.payload
+      };
+    case FETCH_SUBCATEGORIAS:
+      return {
+        ...state,
+        subcategorias: action.payload
       };
 
     default:
