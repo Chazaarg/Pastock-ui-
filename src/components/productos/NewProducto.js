@@ -10,6 +10,7 @@ import {
 import React, { Component } from "react";
 import MarcaModal from "../layout/MarcaModal";
 import CategoriaModal from "../layout/CategoriaModal";
+import SubCategoriaModal from "../layout/SubCategoriaModal";
 
 class NewProducto extends Component {
   componentDidMount() {
@@ -178,6 +179,7 @@ class NewProducto extends Component {
                           ))
                       : null}
                   </select>
+                  <SubCategoriaModal />
                 </div>
               </div>
             </div>

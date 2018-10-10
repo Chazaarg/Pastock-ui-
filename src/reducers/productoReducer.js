@@ -6,7 +6,8 @@ import {
   ADD_MARCA,
   FETCH_CATEGORIAS,
   ADD_CATEGORIA,
-  FETCH_SUBCATEGORIAS
+  FETCH_SUBCATEGORIAS,
+  ADD_SUBCATEGORIA
 } from "../actions/types.js";
 
 const initState = {
@@ -59,7 +60,11 @@ export default function(state = initState, action) {
         ...state,
         subcategorias: action.payload
       };
-
+    case ADD_SUBCATEGORIA:
+      return {
+        ...state,
+        subcategorias: [action.payload, ...state.subcategorias]
+      };
     default:
       return state;
   }

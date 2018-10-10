@@ -59,7 +59,7 @@ class CategoriaModal extends Component {
           <ModalBody>
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
-                <Label for="categoria">categoria</Label>
+                <Label for="categoria">Categoria</Label>
                 <Input
                   type="text"
                   name="nombre"
