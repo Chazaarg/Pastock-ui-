@@ -3,6 +3,7 @@ import {
   FETCH_PRODUCTO,
   ADD_PRODUCTO,
   FETCH_MARCAS,
+  ADD_MARCA,
   FETCH_CATEGORIAS,
   FETCH_SUBCATEGORIAS
 } from "../actions/types.js";
@@ -31,6 +32,11 @@ export default function(state = initState, action) {
       return {
         ...state,
         productos: [action.payload, ...state.productos]
+      };
+    case ADD_MARCA:
+      return {
+        ...state,
+        marcas: [action.payload, ...state.marcas]
       };
     case FETCH_MARCAS:
       return {

@@ -8,6 +8,7 @@ import {
   addProducto
 } from "../../actions/productosActions";
 import React, { Component } from "react";
+import MarcaModal from "../layout/MarcaModal";
 
 class NewProducto extends Component {
   componentDidMount() {
@@ -127,7 +128,10 @@ class NewProducto extends Component {
                       </option>
                     ))}
                   </select>
+                  <MarcaModal />
                 </div>
+                <div className="col-md-8" />
+                <div className="col-md-4" />
               </div>
             </div>
           </div>
@@ -215,7 +219,7 @@ class NewProducto extends Component {
 
               <div
                 id="collapseOne"
-                className="collapse"
+                className="collapse show"
                 aria-labelledby="headingOne"
                 data-parent="#accordion"
               >

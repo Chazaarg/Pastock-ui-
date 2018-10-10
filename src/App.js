@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 import AppNavbar from "./components/layout/AppNavbar";
 import Stock from "./components/layout/Stock";
 import ShowProducto from "./components/productos/ShowProducto";

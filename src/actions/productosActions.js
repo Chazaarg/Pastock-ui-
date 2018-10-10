@@ -3,6 +3,7 @@ import {
   FETCH_PRODUCTO,
   ADD_PRODUCTO,
   FETCH_MARCAS,
+  ADD_MARCA,
   FETCH_CATEGORIAS,
   FETCH_SUBCATEGORIAS
 } from "./types";
@@ -38,6 +39,14 @@ export const getSubcategorias = () => async dispatch => {
 
   dispatch({
     type: FETCH_SUBCATEGORIAS,
+    payload: res.data
+  });
+};
+
+export const addMarca = marca => async dispatch => {
+  const res = await axios.post("/marca/new", marca);
+  dispatch({
+    type: ADD_MARCA,
     payload: res.data
   });
 };
