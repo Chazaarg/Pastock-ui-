@@ -1,6 +1,7 @@
 import {
   FETCH_PRODUCTOS,
   FETCH_PRODUCTO,
+  ADD_PRODUCTO,
   FETCH_MARCAS,
   FETCH_CATEGORIAS,
   FETCH_SUBCATEGORIAS
@@ -25,6 +26,11 @@ export default function(state = initState, action) {
       return {
         ...state,
         producto: action.payload
+      };
+    case ADD_PRODUCTO:
+      return {
+        ...state,
+        productos: [action.payload, ...state.productos]
       };
     case FETCH_MARCAS:
       return {

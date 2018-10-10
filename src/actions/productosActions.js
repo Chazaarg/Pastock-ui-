@@ -1,6 +1,7 @@
 import {
   FETCH_PRODUCTOS,
   FETCH_PRODUCTO,
+  ADD_PRODUCTO,
   FETCH_MARCAS,
   FETCH_CATEGORIAS,
   FETCH_SUBCATEGORIAS
@@ -12,6 +13,14 @@ export const getProductos = () => async dispatch => {
 
   dispatch({
     type: FETCH_PRODUCTOS,
+    payload: res.data
+  });
+};
+
+export const addProducto = producto => async dispatch => {
+  const res = await axios.post("/producto/new", producto);
+  dispatch({
+    type: ADD_PRODUCTO,
     payload: res.data
   });
 };

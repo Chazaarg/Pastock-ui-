@@ -4,7 +4,8 @@ import PropTypes from "prop-types";
 import {
   getMarcas,
   getCategorias,
-  getSubcategorias
+  getSubcategorias,
+  addProducto
 } from "../../actions/productosActions";
 import React, { Component } from "react";
 
@@ -30,7 +31,48 @@ class NewProducto extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    console.log(this.state);
+
+    const {
+      nombre,
+      descripcion,
+      marca,
+      categoria,
+      sub_categoria,
+      precio,
+      codigo_de_barras,
+      cantidad,
+      precio_compra,
+      precio_real
+    } = this.state;
+
+    const nuevoProducto = {
+      nombre,
+      descripcion,
+      marca,
+      categoria,
+      sub_categoria,
+      precio,
+      codigo_de_barras,
+      cantidad,
+      precio_compra,
+      precio_real
+    };
+
+    this.props.addProducto(nuevoProducto);
+
+    // Clear State
+    this.setState({
+      nombre: "",
+      descripcion: "",
+      marca: "",
+      categoria: "",
+      sub_categoria: "",
+      precio: "",
+      codigo_de_barras: "",
+      cantidad: "",
+      precio_compra: "",
+      precio_real: ""
+    });
   };
 
   onChange = e => {
@@ -287,7 +329,8 @@ class NewProducto extends Component {
 NewProducto.propTypes = {
   categorias: PropTypes.array.isRequired,
   marcas: PropTypes.array.isRequired,
-  subcategorias: PropTypes.array.isRequired
+  subcategorias: PropTypes.array.isRequired,
+  addProducto: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -298,5 +341,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getMarcas, getCategorias, getSubcategorias }
+  { getMarcas, getCategorias, getSubcategorias, addProducto }
 )(NewProducto);
