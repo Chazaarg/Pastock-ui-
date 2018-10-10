@@ -9,6 +9,7 @@ import {
 } from "../../actions/productosActions";
 import React, { Component } from "react";
 import MarcaModal from "../layout/MarcaModal";
+import CategoriaModal from "../layout/CategoriaModal";
 
 class NewProducto extends Component {
   componentDidMount() {
@@ -130,8 +131,6 @@ class NewProducto extends Component {
                   </select>
                   <MarcaModal />
                 </div>
-                <div className="col-md-8" />
-                <div className="col-md-4" />
               </div>
             </div>
           </div>
@@ -153,6 +152,7 @@ class NewProducto extends Component {
                       </option>
                     ))}
                   </select>
+                  <CategoriaModal />
                 </div>
                 <div className="form-group col-md-4">
                   <select

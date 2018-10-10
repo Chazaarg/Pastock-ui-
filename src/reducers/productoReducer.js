@@ -5,6 +5,7 @@ import {
   FETCH_MARCAS,
   ADD_MARCA,
   FETCH_CATEGORIAS,
+  ADD_CATEGORIA,
   FETCH_SUBCATEGORIAS
 } from "../actions/types.js";
 
@@ -42,6 +43,11 @@ export default function(state = initState, action) {
       return {
         ...state,
         marcas: action.payload
+      };
+    case ADD_CATEGORIA:
+      return {
+        ...state,
+        categorias: [action.payload, ...state.categorias]
       };
     case FETCH_CATEGORIAS:
       return {
