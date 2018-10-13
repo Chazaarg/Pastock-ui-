@@ -34,7 +34,8 @@ class NewProducto extends Component {
     precio_real: "",
     variantes: [],
     //Este valor se lo tengo que agregar a NewProducto, en el caso de que tenga variantes
-    varianteTipoId: ""
+    varianteTipoId: "",
+    tieneVariante: false
   };
 
   onSubmit = e => {
@@ -51,26 +52,42 @@ class NewProducto extends Component {
       cantidad,
       precio_compra,
       precio_real,
+      tieneVariante,
       variantes
     } = this.state;
 
-    const nuevoProducto = {
-      nombre,
-      descripcion,
-      marca,
-      categoria,
-      sub_categoria,
-      precio,
-      codigo_de_barras,
-      cantidad,
-      precio_compra,
-      precio_real,
-      variantes
-    };
+    let nuevoProducto = {};
+
+    if (tieneVariante) {
+      nuevoProducto = {
+        nombre,
+        descripcion,
+        marca,
+        categoria,
+        sub_categoria,
+        precio_compra,
+        precio_real,
+        variantes: variantes
+      };
+    } else {
+      nuevoProducto = {
+        nombre,
+        descripcion,
+        marca,
+        categoria,
+        sub_categoria,
+        precio: precio,
+        codigo_de_barras: codigo_de_barras,
+        cantidad: cantidad,
+        precio_compra,
+        precio_real
+      };
+    }
 
     this.props.addProducto(nuevoProducto);
 
     // Clear State
+    /*
     this.setState({
       nombre: "",
       descripcion: "",
@@ -83,6 +100,7 @@ class NewProducto extends Component {
       precio_compra: "",
       precio_real: ""
     });
+    */
   };
 
   varianteOnChange = idx => e => {
@@ -124,6 +142,12 @@ class NewProducto extends Component {
   onChange = e => {
     this.setState({
       [e.target.name]: e.target.value
+    });
+  };
+
+  toggle = b => {
+    this.setState({
+      tieneVariante: b
     });
   };
 
@@ -257,6 +281,7 @@ class NewProducto extends Component {
                     data-target="#collapseOne"
                     aria-expanded="true"
                     aria-controls="collapseOne"
+                    onClick={this.toggle.bind(this, false)}
                   >
                     Producto individual
                   </button>
@@ -334,6 +359,7 @@ class NewProducto extends Component {
                     data-target="#collapseTwo"
                     aria-expanded="false"
                     aria-controls="collapseTwo"
+                    onClick={this.toggle.bind(this, true)}
                   >
                     Producto con variantes
                   </button>
