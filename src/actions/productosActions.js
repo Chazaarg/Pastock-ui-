@@ -7,7 +7,8 @@ import {
   FETCH_CATEGORIAS,
   ADD_CATEGORIA,
   FETCH_SUBCATEGORIAS,
-  ADD_SUBCATEGORIA
+  ADD_SUBCATEGORIA,
+  FETCH_VARIANTETIPOS
 } from "./types";
 import axios from "axios";
 
@@ -82,6 +83,14 @@ export const getProducto = id => async dispatch => {
 
   dispatch({
     type: FETCH_PRODUCTO,
+    payload: res.data
+  });
+};
+export const getVarianteTipos = () => async dispatch => {
+  const res = await axios.get("/variante-tipo");
+
+  dispatch({
+    type: FETCH_VARIANTETIPOS,
     payload: res.data
   });
 };

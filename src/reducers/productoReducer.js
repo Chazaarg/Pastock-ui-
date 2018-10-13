@@ -7,7 +7,8 @@ import {
   FETCH_CATEGORIAS,
   ADD_CATEGORIA,
   FETCH_SUBCATEGORIAS,
-  ADD_SUBCATEGORIA
+  ADD_SUBCATEGORIA,
+  FETCH_VARIANTETIPOS
 } from "../actions/types.js";
 
 const initState = {
@@ -15,7 +16,8 @@ const initState = {
   producto: {},
   marcas: [],
   categorias: [],
-  subcategorias: []
+  subcategorias: [],
+  varianteTipos: []
 };
 
 export default function(state = initState, action) {
@@ -64,6 +66,11 @@ export default function(state = initState, action) {
       return {
         ...state,
         subcategorias: [action.payload, ...state.subcategorias]
+      };
+    case FETCH_VARIANTETIPOS:
+      return {
+        ...state,
+        varianteTipos: action.payload
       };
     default:
       return state;

@@ -5,6 +5,7 @@ import {
   getMarcas,
   getCategorias,
   getSubcategorias,
+  getVarianteTipos,
   addProducto
 } from "../../actions/productosActions";
 import React, { Component } from "react";
@@ -15,6 +16,7 @@ import SubCategoriaModal from "../layout/SubCategoriaModal";
 class NewProducto extends Component {
   componentDidMount() {
     this.props.getMarcas();
+    this.props.getVarianteTipos();
     this.props.getCategorias();
     this.props.getSubcategorias();
   }
@@ -29,7 +31,10 @@ class NewProducto extends Component {
     codigo_de_barras: "",
     cantidad: "",
     precio_compra: "",
-    precio_real: ""
+    precio_real: "",
+    variantes: [],
+    //Este valor se lo tengo que agregar a NewProducto, en el caso de que tenga variantes
+    varianteTipoId: ""
   };
 
   onSubmit = e => {
@@ -45,7 +50,8 @@ class NewProducto extends Component {
       codigo_de_barras,
       cantidad,
       precio_compra,
-      precio_real
+      precio_real,
+      variantes
     } = this.state;
 
     const nuevoProducto = {
@@ -58,7 +64,8 @@ class NewProducto extends Component {
       codigo_de_barras,
       cantidad,
       precio_compra,
-      precio_real
+      precio_real,
+      variantes
     };
 
     this.props.addProducto(nuevoProducto);
@@ -78,6 +85,42 @@ class NewProducto extends Component {
     });
   };
 
+  varianteOnChange = idx => e => {
+    const newVariante = this.state.variantes.map((variante, sidx) => {
+      if (idx !== sidx) return variante;
+      return { ...variante, [e.target.name]: e.target.value };
+    });
+
+    this.setState({ variantes: newVariante });
+  };
+
+  varianteTipoOnChange = e => {
+    this.setState({ varianteTipoId: e.target.value });
+    if (this.state.variantes.length === 0) {
+      this.handleAddVariante();
+    }
+  };
+
+  handleAddVariante = () => {
+    this.setState({
+      variantes: this.state.variantes.concat([
+        {
+          nombre: "",
+          precio: "",
+          cantidad: "",
+          codigo_de_barras: ""
+          //variante_tipo cuando se haga el submit, varianteTipo tiene que ser igual a this.state.varianteTipoId
+        }
+      ])
+    });
+  };
+
+  handleRemoveVariante = idx => () => {
+    this.setState({
+      variantes: this.state.variantes.filter((s, sidx) => idx !== sidx)
+    });
+  };
+
   onChange = e => {
     this.setState({
       [e.target.name]: e.target.value
@@ -93,10 +136,11 @@ class NewProducto extends Component {
       descripcion,
       marca,
       categoria,
-      sub_categoria
+      sub_categoria,
+      variantes
     } = this.state;
 
-    const { categorias, marcas, subcategorias } = this.props;
+    const { categorias, marcas, subcategorias, varianteTipos } = this.props;
 
     return (
       <div>
@@ -302,17 +346,117 @@ class NewProducto extends Component {
                 data-parent="#accordion"
               >
                 <div className="card-body">
-                  Anim pariatur cliche reprehenderit, enim eiusmod high life
-                  accusamus terry richardson ad squid. 3 wolf moon officia aute,
-                  non cupidatat skateboard dolor brunch. Food truck quinoa
-                  nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt
-                  aliqua put a bird on it squid single-origin coffee nulla
-                  assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft
-                  beer labore wes anderson cred nesciunt sapiente ea proident.
-                  Ad vegan excepteur butcher vice lomo. Leggings occaecat craft
-                  beer farm-to-table, raw denim aesthetic synth nesciunt you
-                  probably haven't heard of them accusamus labore sustainable
-                  VHS.
+                  <div className="form-group col-md-4">
+                    <select
+                      name="varianteTipo"
+                      className="form-control"
+                      onChange={this.varianteTipoOnChange}
+                    >
+                      <option>Elige el tipo de variante:</option>
+                      {varianteTipos.map(varianteTipo => (
+                        <option key={varianteTipo.id} value={varianteTipo.id}>
+                          {varianteTipo.nombre}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  {variantes.map((variante, idx) => (
+                    <div key={idx} className="variante">
+                      <hr />
+                      <h5 className="card-title p-2 p-2">
+                        Variante #{idx + 1}
+                      </h5>
+                      <div className="form-group row">
+                        <label
+                          htmlFor="nombre"
+                          className="col-sm-2 col-form-label"
+                        >
+                          Nombre
+                        </label>
+                        <div className="col-sm-10">
+                          <input
+                            type="text"
+                            className="form-control"
+                            name="nombre"
+                            placeholder="Nombre"
+                            value={variante.nombre}
+                            onChange={this.varianteOnChange(idx)}
+                          />
+                        </div>
+                      </div>
+                      <div className="form-group row">
+                        <label
+                          htmlFor="cantidad"
+                          className="col-sm-2 col-form-label"
+                        >
+                          Cantidad
+                        </label>
+                        <div className="col-sm-10">
+                          <input
+                            type="text"
+                            className="form-control"
+                            name="cantidad"
+                            placeholder="Cantidad"
+                            value={variante.cantidad}
+                            onChange={this.varianteOnChange(idx)}
+                          />
+                        </div>
+                      </div>
+                      <div className="form-group row">
+                        <label
+                          htmlFor="precio"
+                          className="col-sm-2 col-form-label"
+                        >
+                          Precio
+                        </label>
+                        <div className="col-sm-10">
+                          <input
+                            type="text"
+                            className="form-control"
+                            name="precio"
+                            placeholder="Precio"
+                            value={variante.precio}
+                            onChange={this.varianteOnChange(idx)}
+                          />
+                        </div>
+                      </div>
+                      <div className="form-group row">
+                        <label
+                          htmlFor="codigo_de_barras"
+                          className="col-sm-2 col-form-label"
+                        >
+                          Código de barras
+                        </label>
+                        <div className="col-sm-10">
+                          <input
+                            type="text"
+                            className="form-control"
+                            name="codigo_de_barras"
+                            placeholder="Código de barras"
+                            value={variante.codigo_de_barras}
+                            onChange={this.varianteOnChange(idx)}
+                          />
+                        </div>
+                      </div>
+                      <div className="form-group row">
+                        <button
+                          type="button"
+                          onClick={this.handleRemoveVariante(idx)}
+                          className="btn btn-danger float-right m-3"
+                        >
+                          Eliminar variante
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+
+                  <button
+                    type="button"
+                    onClick={this.handleAddVariante}
+                    className="btn btn-success m-3 float-right"
+                  >
+                    Añadir variante
+                  </button>
                 </div>
               </div>
             </div>
@@ -336,16 +480,18 @@ NewProducto.propTypes = {
   categorias: PropTypes.array.isRequired,
   marcas: PropTypes.array.isRequired,
   subcategorias: PropTypes.array.isRequired,
+  varianteTipos: PropTypes.array.isRequired,
   addProducto: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   categorias: state.producto.categorias,
   marcas: state.producto.marcas,
-  subcategorias: state.producto.subcategorias
+  subcategorias: state.producto.subcategorias,
+  varianteTipos: state.producto.varianteTipos
 });
 
 export default connect(
   mapStateToProps,
-  { getMarcas, getCategorias, getSubcategorias, addProducto }
+  { getMarcas, getCategorias, getSubcategorias, addProducto, getVarianteTipos }
 )(NewProducto);
