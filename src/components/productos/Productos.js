@@ -35,7 +35,7 @@ class Productos extends Component {
             {productos.map(producto => (
               <tr key={producto.id}>
                 <td>{producto.nombre}</td>
-                <td>{producto.marca}</td>
+                <td>{producto.marca ? producto.marca.nombre : null}</td>
                 {producto.variantes ? (
                   <React.Fragment>
                     <td>
@@ -80,9 +80,9 @@ class Productos extends Component {
                   </React.Fragment>
                 )}
                 <td>
-                  {producto.categoria}{" "}
+                  {producto.categoria ? producto.categoria.nombre : null}{" "}
                   {producto.sub_categoria
-                    ? "> " + producto.sub_categoria
+                    ? "> " + producto.sub_categoria.nombre
                     : null}
                 </td>
                 <td>

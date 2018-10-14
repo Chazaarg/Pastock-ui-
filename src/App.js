@@ -8,6 +8,7 @@ import AppNavbar from "./components/layout/AppNavbar";
 import Stock from "./components/layout/Stock";
 import ShowProducto from "./components/productos/ShowProducto";
 import NewProducto from "./components/productos/NewProducto";
+import EditProducto from "./components/productos/EditProducto";
 import NotFound from "./components/pages/NotFound";
 
 import store from "./store";
@@ -26,6 +27,11 @@ class App extends Component {
                   exact
                   path="/producto/:id/show" //El /show no tendría que estar.
                   component={ShowProducto}
+                />
+                <Route
+                  exact
+                  path="/producto/:id/edit" //El /show no tendría que estar.
+                  component={EditProducto}
                 />
                 <Route exact path="/producto/new" component={NewProducto} />
                 <Route component={NotFound} />

@@ -17,11 +17,11 @@ class ShowProducto extends Component {
         <div className="row">
           <div className="col-9">
             <h1>
-              {producto.nombre} {producto.marca ? "-" + producto.marca : null}
+              {producto.nombre} {producto.marca ? "-" + producto.marca.nombre : null}
             </h1>
             <h6 className="text-muted mt-2">
-              {producto.categoria}{" "}
-              {producto.sub_categoria ? ">" + producto.sub_categoria : null}
+              {producto.categoria ? producto.categoria.nombre : null }{" "}
+              {producto.sub_categoria ? ">" + producto.sub_categoria.nombre : null}
             </h6>
           </div>
           <div className="col-3 float-right">

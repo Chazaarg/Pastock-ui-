@@ -8,7 +8,8 @@ import {
   ADD_CATEGORIA,
   FETCH_SUBCATEGORIAS,
   ADD_SUBCATEGORIA,
-  FETCH_VARIANTETIPOS
+  FETCH_VARIANTETIPOS,
+  UPDATE_PRODUCTO
 } from "./types";
 import axios from "axios";
 
@@ -25,6 +26,14 @@ export const addProducto = producto => async dispatch => {
   const res = await axios.post("/producto/new", producto);
   dispatch({
     type: ADD_PRODUCTO,
+    payload: res.data
+  });
+};
+
+export const updateProducto = producto => async dispatch => {
+  const res = await axios.put(`/producto/${producto.id}/edit`, producto);
+  dispatch({
+    type: UPDATE_PRODUCTO,
     payload: res.data
   });
 };

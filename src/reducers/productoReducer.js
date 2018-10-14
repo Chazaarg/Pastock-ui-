@@ -8,7 +8,8 @@ import {
   ADD_CATEGORIA,
   FETCH_SUBCATEGORIAS,
   ADD_SUBCATEGORIA,
-  FETCH_VARIANTETIPOS
+  FETCH_VARIANTETIPOS,
+  UPDATE_PRODUCTO
 } from "../actions/types.js";
 
 const initState = {
@@ -36,6 +37,16 @@ export default function(state = initState, action) {
       return {
         ...state,
         productos: [action.payload, ...state.productos]
+      };
+    case UPDATE_PRODUCTO:
+      return {
+        ...state,
+        productos: state.productos.map(
+          producto =>
+            producto.id === action.payload.id
+              ? (producto = action.payload)
+              : producto
+        )
       };
     case ADD_MARCA:
       return {
