@@ -9,7 +9,8 @@ import {
   FETCH_SUBCATEGORIAS,
   ADD_SUBCATEGORIA,
   FETCH_VARIANTETIPOS,
-  UPDATE_PRODUCTO
+  UPDATE_PRODUCTO,
+  DELETE_PRODUCTO
 } from "../actions/types.js";
 
 const initState = {
@@ -37,6 +38,13 @@ export default function(state = initState, action) {
       return {
         ...state,
         productos: [action.payload, ...state.productos]
+      };
+    case DELETE_PRODUCTO:
+      return {
+        ...state,
+        productos: state.productos.filter(
+          producto => producto.id !== action.payload
+        )
       };
     case UPDATE_PRODUCTO:
       return {

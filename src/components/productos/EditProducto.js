@@ -8,7 +8,8 @@ import {
   getVarianteTipos,
   getProducto,
   addProducto,
-  updateProducto
+  updateProducto,
+  deleteProducto
 } from "../../actions/productosActions";
 import React, { Component } from "react";
 import MarcaModal from "../layout/MarcaModal";
@@ -69,9 +70,11 @@ class EditProducto extends Component {
     } else {
       this.setState({
         tieneVariante: true,
-        varianteTipoId: this.state.variantes[0]
-          ? this.state.variantes[0].variante_tipo.id
+        varianteTipoId: this.state.variantes
+          ? this.state.variantes[0]
           : null
+            ? this.state.variantes[0].variante_tipo.id
+            : null
       });
       //Si tiene variantes le agrega la clase 'show' al collapse
       document.getElementById("collapseTwo").classList.add("show");
@@ -131,7 +134,7 @@ class EditProducto extends Component {
         id,
         nombre,
         descripcion,
-        marca: marca,
+        marca: marca.id,
         categoria: categoria.id,
         sub_categoria: sub_categoria.id,
         precio: precio,
@@ -158,6 +161,7 @@ class EditProducto extends Component {
       precio_real: "",
       variantes: []
     });
+    this.props.history.push("/producto");
   };
 
   varianteOnChange = idx => e => {
@@ -206,6 +210,10 @@ class EditProducto extends Component {
       tieneVariante: b
     });
   };
+  onDeleteClick = id => {
+    this.props.deleteProducto(id);
+    this.props.history.push("/producto");
+  };
 
   render() {
     const {
@@ -219,12 +227,31 @@ class EditProducto extends Component {
       sub_categoria,
       variantes
     } = this.state;
-
+    const { id } = this.props.match.params;
     const { categorias, marcas, subcategorias, varianteTipos } = this.props;
 
     return (
       <div>
-        <h1>Editar Producto</h1>
+        <div className="row">
+          <div className="col-9">
+            <h1>
+              Editar {nombre} {marca ? "- " + marca.nombre : null}
+            </h1>
+            <h6 className="text-muted mt-2">
+              {categoria ? categoria.nombre : null}{" "}
+              {sub_categoria ? "> " + sub_categoria.nombre : null}
+            </h6>
+          </div>
+          <div className="col-3 float-right">
+            <button
+              type="button"
+              className="btn btn-danger float-right mb-0"
+              onClick={this.onDeleteClick.bind(this, id)}
+            >
+              Eliminar
+            </button>
+          </div>
+        </div>
         <form onSubmit={this.onSubmit}>
           <div className="card border-light mt-5">
             <div className="card-header">Nombre y Marca</div>
@@ -572,7 +599,8 @@ EditProducto.propTypes = {
   marcas: PropTypes.array.isRequired,
   subcategorias: PropTypes.array.isRequired,
   varianteTipos: PropTypes.array.isRequired,
-  addProducto: PropTypes.func.isRequired
+  addProducto: PropTypes.func.isRequired,
+  deleteProducto: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -592,6 +620,7 @@ export default connect(
     addProducto,
     getVarianteTipos,
     getProducto,
-    updateProducto
+    updateProducto,
+    deleteProducto
   }
 )(EditProducto);

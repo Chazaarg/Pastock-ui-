@@ -9,7 +9,8 @@ import {
   FETCH_SUBCATEGORIAS,
   ADD_SUBCATEGORIA,
   FETCH_VARIANTETIPOS,
-  UPDATE_PRODUCTO
+  UPDATE_PRODUCTO,
+  DELETE_PRODUCTO
 } from "./types";
 import axios from "axios";
 
@@ -19,6 +20,14 @@ export const getProductos = () => async dispatch => {
   dispatch({
     type: FETCH_PRODUCTOS,
     payload: res.data
+  });
+};
+
+export const deleteProducto = id => async dispatch => {
+  await axios.delete(`/producto/${id}/delete`);
+  dispatch({
+    type: DELETE_PRODUCTO,
+    payload: id
   });
 };
 
