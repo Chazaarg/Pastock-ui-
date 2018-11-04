@@ -16,7 +16,7 @@ import EditProducto from "../components/productos/EditProducto";
 import NotFound from "../components/pages/NotFound";
 import Login from "../components/pages/Login";
 import Register from "../components/pages/Register";
-import { getUsuario } from "../actions/productosActions";
+import { getUsuario } from "../actions/usuarioActions";
 
 class Routes extends Component {
   componentDidMount() {
@@ -109,7 +109,7 @@ Routes.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  usuario: state.producto.usuario
+  usuario: state.usuario.usuario
 });
 
 export default connect(

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { login } from "../../actions/productosActions";
+import { login } from "../../actions/usuarioActions";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
