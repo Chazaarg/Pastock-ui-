@@ -10,7 +10,10 @@ import {
   ADD_SUBCATEGORIA,
   FETCH_VARIANTETIPOS,
   UPDATE_PRODUCTO,
-  DELETE_PRODUCTO
+  DELETE_PRODUCTO,
+  FETCH_USER,
+  LOG_OUT,
+  LOG_IN
 } from "../actions/types.js";
 
 const initState = {
@@ -19,7 +22,8 @@ const initState = {
   marcas: [],
   categorias: [],
   subcategorias: [],
-  varianteTipos: []
+  varianteTipos: [],
+  usuario: {}
 };
 
 export default function(state = initState, action) {
@@ -28,6 +32,21 @@ export default function(state = initState, action) {
       return {
         ...state,
         productos: action.payload
+      };
+    case LOG_IN:
+      return {
+        ...state,
+        usuario: action.payload
+      };
+    case LOG_OUT:
+      return {
+        ...state,
+        usuario: {}
+      };
+    case FETCH_USER:
+      return {
+        ...state,
+        usuario: action.payload
       };
     case FETCH_PRODUCTO:
       return {

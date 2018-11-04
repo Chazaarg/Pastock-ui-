@@ -10,15 +10,44 @@ import {
   ADD_SUBCATEGORIA,
   FETCH_VARIANTETIPOS,
   UPDATE_PRODUCTO,
-  DELETE_PRODUCTO
+  DELETE_PRODUCTO,
+  LOG_IN,
+  FETCH_USER,
+  LOG_OUT
 } from "./types";
 import axios from "axios";
+
+export const login = user => async dispatch => {
+  const res = await axios.post("/login", user);
+  dispatch({
+    type: LOG_IN,
+    payload: res.data
+  });
+};
+
+export const logOut = () => async dispatch => {
+  const res = await axios.get("/logout");
+
+  dispatch({
+    type: LOG_OUT,
+    payload: res.data
+  });
+};
 
 export const getProductos = () => async dispatch => {
   const res = await axios.get("/producto");
 
   dispatch({
     type: FETCH_PRODUCTOS,
+    payload: res.data
+  });
+};
+
+export const getUsuario = () => async dispatch => {
+  const res = await axios.get("/user");
+
+  dispatch({
+    type: FETCH_USER,
     payload: res.data
   });
 };

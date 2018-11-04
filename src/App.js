@@ -1,15 +1,9 @@
 import React, { Component } from "react";
 import { Provider } from "react-redux";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import AppNavbar from "./components/layout/AppNavbar";
-import Stock from "./components/layout/Stock";
-import ShowProducto from "./components/productos/ShowProducto";
-import NewProducto from "./components/productos/NewProducto";
-import EditProducto from "./components/productos/EditProducto";
-import NotFound from "./components/pages/NotFound";
+import Routes from "./helpers/Routes";
 
 import store from "./store";
 
@@ -17,28 +11,7 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Router>
-          <div className="App">
-            <AppNavbar />
-            <div className="container">
-              <Switch>
-                <Route exact path="/producto" component={Stock} />
-                <Route
-                  exact
-                  path="/producto/:id/show" //El /show no tendría que estar.
-                  component={ShowProducto}
-                />
-                <Route
-                  exact
-                  path="/producto/:id/edit" //El /show no tendría que estar.
-                  component={EditProducto}
-                />
-                <Route exact path="/producto/new" component={NewProducto} />
-                <Route component={NotFound} />
-              </Switch>
-            </div>
-          </div>
-        </Router>
+        <Routes />
       </Provider>
     );
   }
