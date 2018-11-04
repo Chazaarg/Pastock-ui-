@@ -14,9 +14,8 @@ class Login extends Component {
   componentWillUnmount() {
     const { message } = this.props.notify;
     const { notifyUser } = this.props;
-    {
-      message && notifyUser(null, null);
-    }
+
+    message && notifyUser(null, null);
   }
 
   onSubmit = e => {

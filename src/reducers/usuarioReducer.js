@@ -1,4 +1,9 @@
-import { FETCH_USER, LOG_OUT, LOG_IN } from "../actions/types.js";
+import {
+  FETCH_USER,
+  LOG_OUT,
+  LOG_IN,
+  REGISTER_USER
+} from "../actions/types.js";
 
 const initState = {
   usuario: {}
@@ -17,6 +22,11 @@ export default function(state = initState, action) {
         usuario: { user: "anonymous" }
       };
     case FETCH_USER:
+      return {
+        ...state,
+        usuario: action.payload
+      };
+    case REGISTER_USER:
       return {
         ...state,
         usuario: action.payload
