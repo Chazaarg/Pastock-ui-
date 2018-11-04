@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { login } from "../../actions/usuarioActions";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import Alert from "../layout/Alert";
+import { notifyUser } from "../../actions/notifyActions";
 
 class Login extends Component {
   state = {
@@ -9,21 +11,33 @@ class Login extends Component {
     password: ""
   };
 
+  componentWillUnmount() {
+    const { message } = this.props.notify;
+    const { notifyUser } = this.props;
+    {
+      message && notifyUser(null, null);
+    }
+  }
+
   onSubmit = e => {
     e.preventDefault();
 
     const { username, password } = this.state;
 
-    this.props.login({ username, password }).catch(err => alert(err));
+    this.props.login({ username, password });
   };
   onChange = e => this.setState({ [e.target.name]: e.target.value });
   render() {
+    const { message, messageType } = this.props.notify;
     return (
       <div>
         <div className="row">
           <div className="col-md-6 mx-auto">
             <div className="card">
               <div className="card-body">
+                {message ? (
+                  <Alert message={message} messageType={messageType} />
+                ) : null}
                 <h1 className="text-center pb-4 pt-3">Ingresar</h1>
                 <form onSubmit={this.onSubmit}>
                   <div className="form-group">
@@ -64,10 +78,16 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-  login: PropTypes.func.isRequired
+  login: PropTypes.func.isRequired,
+  notifyUser: PropTypes.func.isRequired
 };
 
 export default connect(
-  null,
-  { login }
+  (state, props) => ({
+    notify: state.notify
+  }),
+  {
+    login,
+    notifyUser
+  }
 )(Login);

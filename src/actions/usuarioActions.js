@@ -1,12 +1,20 @@
-import { FETCH_USER, LOG_OUT, LOG_IN } from "../actions/types.js";
+import { FETCH_USER, LOG_OUT, LOG_IN, NOTIFY_USER } from "../actions/types.js";
 import axios from "axios";
 
 export const login = user => async dispatch => {
-  const res = await axios.post("/login", user);
-  dispatch({
-    type: LOG_IN,
-    payload: res.data
-  });
+  try {
+    const res = await axios.post("/login", user);
+    dispatch({
+      type: LOG_IN,
+      payload: res.data
+    });
+  } catch (error) {
+    dispatch({
+      type: NOTIFY_USER,
+      message: error.response.data.error,
+      messageType: "error"
+    });
+  }
 };
 
 export const logOut = () => async dispatch => {
