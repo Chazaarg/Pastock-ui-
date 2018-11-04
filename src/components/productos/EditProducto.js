@@ -270,7 +270,7 @@ class EditProducto extends Component {
                 <div className="form-group col-md-4">
                   <select
                     name="marca"
-                    value={marca ? marca.id : null}
+                    value={marca ? marca.id : 0}
                     className="form-control"
                     onChange={this.onChange}
                   >
@@ -293,7 +293,7 @@ class EditProducto extends Component {
                 <div className="form-group col-md-6">
                   <select
                     name="categoria"
-                    value={categoria ? categoria.id : null}
+                    value={categoria ? categoria.id : 0}
                     className="form-control"
                     onChange={this.onChange}
                   >
@@ -309,7 +309,7 @@ class EditProducto extends Component {
                 <div className="form-group col-md-4">
                   <select
                     name="sub_categoria"
-                    value={sub_categoria ? sub_categoria.id : null}
+                    value={sub_categoria ? sub_categoria.id : 0}
                     className="form-control"
                     onChange={this.onChange}
                   >

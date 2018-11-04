@@ -41,7 +41,7 @@ export default function(state = initState, action) {
     case LOG_OUT:
       return {
         ...state,
-        usuario: {}
+        usuario: { user: "anonymous" }
       };
     case FETCH_USER:
       return {
