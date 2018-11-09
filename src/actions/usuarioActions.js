@@ -18,7 +18,8 @@ export const login = user => async dispatch => {
     dispatch({
       type: NOTIFY_USER,
       message: error.response.data.error,
-      messageType: "error"
+      messageType: "error",
+      values: error.response.data.values
     });
   }
 };
@@ -47,8 +48,9 @@ export const registerUser = user => async dispatch => {
   } catch (error) {
     dispatch({
       type: NOTIFY_USER,
-      message: "Error al registrarse.",
-      messageType: "error"
+      message: error.response.data.errors,
+      messageType: error.response.data.status,
+      values: error.response.data.values
     });
   }
 };

@@ -29,7 +29,7 @@ class Register extends Component {
   };
   onChange = e => this.setState({ [e.target.name]: e.target.value });
   render() {
-    const { message, messageType } = this.props.notify;
+    const { message, messageType, values } = this.props.notify;
     return (
       <div>
         <div className="row">
@@ -37,7 +37,11 @@ class Register extends Component {
             <div className="card">
               <div className="card-body">
                 {message ? (
-                  <Alert message={message} messageType={messageType} />
+                  <Alert
+                    message={message}
+                    messageType={messageType}
+                    values={values}
+                  />
                 ) : null}
                 <h1 className="text-center pb-4 pt-3">Registrarse</h1>
                 <form onSubmit={this.onSubmit}>
@@ -47,7 +51,6 @@ class Register extends Component {
                       type="text"
                       name="username"
                       className="form-control"
-                      required
                       value={this.state.username}
                       onChange={this.onChange}
                     />
@@ -58,7 +61,6 @@ class Register extends Component {
                       type="password"
                       name="password"
                       className="form-control"
-                      required
                       value={this.state.password}
                       onChange={this.onChange}
                     />
@@ -69,7 +71,6 @@ class Register extends Component {
                       type="email"
                       name="email"
                       className="form-control"
-                      required
                       value={this.state.email}
                       onChange={this.onChange}
                     />

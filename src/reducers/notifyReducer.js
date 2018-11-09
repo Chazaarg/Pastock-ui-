@@ -2,7 +2,8 @@ import { NOTIFY_USER } from "../actions/types";
 
 const initialState = {
   message: null,
-  messageType: null
+  messageType: null,
+  values: null
 };
 
 export default function(state = initialState, action) {
@@ -11,7 +12,8 @@ export default function(state = initialState, action) {
       return {
         ...state,
         message: action.message,
-        messageType: action.messageType
+        messageType: action.messageType,
+        values: action.values
       };
     default:
       return state;

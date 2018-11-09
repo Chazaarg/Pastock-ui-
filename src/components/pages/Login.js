@@ -45,7 +45,6 @@ class Login extends Component {
                       type="text"
                       name="username"
                       className="form-control"
-                      required
                       value={this.state.username}
                       onChange={this.onChange}
                     />
@@ -56,7 +55,6 @@ class Login extends Component {
                       type="password"
                       name="password"
                       className="form-control"
-                      required
                       value={this.state.password}
                       onChange={this.onChange}
                     />
