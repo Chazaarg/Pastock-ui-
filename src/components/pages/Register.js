@@ -13,10 +13,10 @@ class Register extends Component {
   };
 
   componentWillUnmount() {
-    const { message } = this.props.notify;
+    const { message, errors, messageType } = this.props.notify;
     const { notifyUser } = this.props;
 
-    message && notifyUser(null, null);
+    message && notifyUser(null, null, null);
   }
 
   onSubmit = e => {
@@ -29,7 +29,7 @@ class Register extends Component {
   };
   onChange = e => this.setState({ [e.target.name]: e.target.value });
   render() {
-    const { message, messageType, values } = this.props.notify;
+    const { message, messageType, errors } = this.props.notify;
     return (
       <div>
         <div className="row">
@@ -40,7 +40,7 @@ class Register extends Component {
                   <Alert
                     message={message}
                     messageType={messageType}
-                    values={values}
+                    errors={errors}
                   />
                 ) : null}
                 <h1 className="text-center pb-4 pt-3">Registrarse</h1>

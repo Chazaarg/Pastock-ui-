@@ -1,9 +1,9 @@
 import { NOTIFY_USER } from "../actions/types";
 
 const initialState = {
+  errors: {},
   message: null,
-  messageType: null,
-  values: null
+  messageType: null
 };
 
 export default function(state = initialState, action) {
@@ -11,9 +11,9 @@ export default function(state = initialState, action) {
     case NOTIFY_USER:
       return {
         ...state,
-        message: action.message,
-        messageType: action.messageType,
-        values: action.values
+        errors: action.payload.errors,
+        message: action.payload.message,
+        messageType: action.payload.messageType
       };
     default:
       return state;
