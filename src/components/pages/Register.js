@@ -13,7 +13,7 @@ class Register extends Component {
   };
 
   componentWillUnmount() {
-    const { message, errors, messageType } = this.props.notify;
+    const { message } = this.props.notify;
     const { notifyUser } = this.props;
 
     message && notifyUser(null, null, null);

@@ -11,9 +11,9 @@ export default function(state = initialState, action) {
     case NOTIFY_USER:
       return {
         ...state,
-        errors: action.payload.errors,
-        message: action.payload.message,
-        messageType: action.payload.messageType
+        errors: action.errors,
+        message: action.message,
+        messageType: action.messageType
       };
     default:
       return state;

@@ -48,7 +48,9 @@ export const registerUser = user => async dispatch => {
   } catch (error) {
     dispatch({
       type: NOTIFY_USER,
-      payload: error.response.data
+      message: error.response.data.message,
+      messageType: error.response.data.messageType,
+      errors: error.response.data.errors
     });
   }
 };
