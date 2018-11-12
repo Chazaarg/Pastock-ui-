@@ -15,7 +15,7 @@ class Login extends Component {
     const { message } = this.props.notify;
     const { notifyUser } = this.props;
 
-    message && notifyUser(null, null);
+    message && notifyUser(null, null, null);
   }
 
   onSubmit = e => {
@@ -27,7 +27,7 @@ class Login extends Component {
   };
   onChange = e => this.setState({ [e.target.name]: e.target.value });
   render() {
-    const { message, messageType } = this.props.notify;
+    const { message, messageType, errors } = this.props.notify;
     return (
       <div>
         <div className="row">
@@ -35,7 +35,11 @@ class Login extends Component {
             <div className="card">
               <div className="card-body">
                 {message ? (
-                  <Alert message={message} messageType={messageType} />
+                  <Alert
+                    message={message}
+                    messageType={messageType}
+                    errors={errors}
+                  />
                 ) : null}
                 <h1 className="text-center pb-4 pt-3">Ingresar</h1>
                 <form onSubmit={this.onSubmit}>

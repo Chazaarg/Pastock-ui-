@@ -13,6 +13,7 @@ class Register extends Component {
   };
 
   componentWillUnmount() {
+    //Esto hace un clear a notify cada vez que cambie de ruta.
     const { message } = this.props.notify;
     const { notifyUser } = this.props;
 
@@ -27,16 +28,19 @@ class Register extends Component {
 
     registerUser({ username, password, email });
   };
+
   onChange = e => this.setState({ [e.target.name]: e.target.value });
   render() {
     const { message, messageType, errors } = this.props.notify;
+
     return (
       <div>
         <div className="row">
           <div className="col-md-6 mx-auto">
             <div className="card">
               <div className="card-body">
-                {message ? (
+                {//Si hay un mensaje, entonces lo muestro en la alerta.
+                message ? (
                   <Alert
                     message={message}
                     messageType={messageType}
@@ -77,7 +81,7 @@ class Register extends Component {
                   </div>
                   <input
                     type="submit"
-                    value="Login"
+                    value="Registrarse"
                     className="btn btn-dark btn-block"
                   />
                 </form>

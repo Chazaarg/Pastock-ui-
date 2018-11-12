@@ -17,9 +17,9 @@ export const login = user => async dispatch => {
   } catch (error) {
     dispatch({
       type: NOTIFY_USER,
-      message: error.response.data.error,
-      messageType: "error",
-      values: error.response.data.values
+      errors: [],
+      message: "El usuario y contraseña ingresados no coinciden.",
+      messageType: "error"
     });
   }
 };
@@ -42,6 +42,7 @@ export const registerUser = user => async dispatch => {
     });
     dispatch({
       type: NOTIFY_USER,
+      errors: [],
       message: res.data.message,
       messageType: res.data.messageType
     });
