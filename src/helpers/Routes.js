@@ -54,10 +54,8 @@ class Routes extends Component {
             )
           }
         />
-      ) : (
-        //TODO: poner un spinner
-        <h1 className="m-auto">Cargando...</h1>
-      );
+      ) : //TODO: poner un spinner
+      null;
     const AnonymousRoute = ({ component: Component, ...rest }) => (
       <Route
         {...rest}

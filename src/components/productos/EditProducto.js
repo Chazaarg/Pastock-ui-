@@ -15,6 +15,8 @@ import React, { Component } from "react";
 import ProductoDefault from "./ProductoDefault";
 import ProductoIndividual from "./ProductoIndividual";
 import ProductoVariantes from "./ProductoVariantes";
+import { createLoadingSelector } from "../../helpers/CreateLoadingSelector";
+import Loader from "react-loader";
 
 class EditProducto extends Component {
   state = {
@@ -32,6 +34,7 @@ class EditProducto extends Component {
     varianteTipoId: "",
     tieneVariante: false
   };
+  //TODO: Que se reinicie el estado de loading, al menos FETCH_PRODUCTO.
   componentWillReceiveProps(nextProps, nextState) {
     const {
       nombre,
@@ -66,7 +69,9 @@ class EditProducto extends Component {
         variantes: []
       });
       //Si no tiene variantes le agrega la clase 'show' al collapse
-      document.getElementById("collapseOne").classList.add("show");
+      if (document.getElementById("collapseOne")) {
+        document.getElementById("collapseOne").classList.add("show");
+      }
     } else {
       this.setState({
         tieneVariante: true,
@@ -77,7 +82,9 @@ class EditProducto extends Component {
           : null
       });
       //Si tiene variantes le agrega la clase 'show' al collapse
-      document.getElementById("collapseTwo").classList.add("show");
+      if (document.getElementById("collapseTwo")) {
+        document.getElementById("collapseTwo").classList.add("show");
+      }
     }
   }
 
@@ -229,7 +236,13 @@ class EditProducto extends Component {
       varianteTipoId
     } = this.state;
     const { id } = this.props.match.params;
-    const { categorias, marcas, subcategorias, varianteTipos } = this.props;
+    const {
+      categorias,
+      marcas,
+      subcategorias,
+      varianteTipos,
+      isFetching
+    } = this.props;
 
     return (
       <div>
@@ -247,53 +260,58 @@ class EditProducto extends Component {
             </button>
           </div>
         </div>
-        <form onSubmit={this.onSubmit}>
-          <ProductoDefault
-            nombre={nombre}
-            marca={marca}
-            categoria={categoria}
-            sub_categoria={sub_categoria}
-            descripcion={descripcion}
-            categorias={categorias}
-            marcas={marcas}
-            subcategorias={subcategorias}
-            onChange={this.onChange.bind(this)}
-          />
 
-          <div id="accordion">
-            <ProductoIndividual
-              cantidad={cantidad}
-              precio={precio}
-              codigo_de_barras={codigo_de_barras}
-              toggle={this.toggle.bind(this)}
+        <Loader loaded={isFetching}>
+          <form onSubmit={this.onSubmit}>
+            <ProductoDefault
+              nombre={nombre}
+              marca={marca}
+              categoria={categoria}
+              sub_categoria={sub_categoria}
+              descripcion={descripcion}
+              categorias={categorias}
+              marcas={marcas}
+              subcategorias={subcategorias}
               onChange={this.onChange.bind(this)}
             />
-            <ProductoVariantes
-              variantes={variantes}
-              varianteTipos={varianteTipos}
-              varianteTipoId={varianteTipoId}
-              toggle={this.toggle.bind(this)}
-              varianteTipoOnChange={this.varianteTipoOnChange.bind(this)}
-              varianteOnChange={this.varianteOnChange.bind(this)}
-              handleRemoveVariante={this.handleRemoveVariante.bind(this)}
-              handleAddVariante={this.handleAddVariante.bind(this)}
-            />
-          </div>
 
-          <div className="row-12 mt-5 pt-5 pb-5 mb-5">
-            <hr />
-            <Link to={`/producto`} className="btn btn-secondary">
-              Volver
-            </Link>
-            <button type="submit" className="btn btn-success float-right">
-              Editar Producto
-            </button>
-          </div>
-        </form>
+            <div id="accordion">
+              <ProductoIndividual
+                cantidad={cantidad}
+                precio={precio}
+                codigo_de_barras={codigo_de_barras}
+                toggle={this.toggle.bind(this)}
+                onChange={this.onChange.bind(this)}
+              />
+              <ProductoVariantes
+                variantes={variantes}
+                varianteTipos={varianteTipos}
+                varianteTipoId={varianteTipoId}
+                toggle={this.toggle.bind(this)}
+                varianteTipoOnChange={this.varianteTipoOnChange.bind(this)}
+                varianteOnChange={this.varianteOnChange.bind(this)}
+                handleRemoveVariante={this.handleRemoveVariante.bind(this)}
+                handleAddVariante={this.handleAddVariante.bind(this)}
+              />
+            </div>
+
+            <div className="row-12 mt-5 pt-5 pb-5 mb-5">
+              <hr />
+              <Link to={`/producto`} className="btn btn-secondary">
+                Volver
+              </Link>
+              <button type="submit" className="btn btn-success float-right">
+                Editar Producto
+              </button>
+            </div>
+          </form>
+        </Loader>
       </div>
     );
   }
 }
+
+const loadingSelector = createLoadingSelector(["FETCH_SUBCATEGORIAS"]);
 
 EditProducto.propTypes = {
   producto: PropTypes.object.isRequired,
@@ -304,7 +322,8 @@ EditProducto.propTypes = {
   subcategorias: PropTypes.array.isRequired,
   varianteTipos: PropTypes.array.isRequired,
   addProducto: PropTypes.func.isRequired,
-  deleteProducto: PropTypes.func.isRequired
+  deleteProducto: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -312,7 +331,9 @@ const mapStateToProps = state => ({
   categorias: state.producto.categorias,
   marcas: state.producto.marcas,
   subcategorias: state.producto.subcategorias,
-  varianteTipos: state.producto.varianteTipos
+  varianteTipos: state.producto.varianteTipos,
+  loading: state.loading,
+  isFetching: loadingSelector(state)
 });
 
 export default connect(

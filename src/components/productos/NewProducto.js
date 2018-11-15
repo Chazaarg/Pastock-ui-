@@ -12,6 +12,8 @@ import React, { Component } from "react";
 import ProductoDefault from "./ProductoDefault";
 import ProductoIndividual from "./ProductoIndividual";
 import ProductoVariantes from "./ProductoVariantes";
+import { createLoadingSelector } from "../../helpers/CreateLoadingSelector";
+import Loader from "react-loader";
 
 class NewProducto extends Component {
   componentDidMount() {
@@ -169,71 +171,83 @@ class NewProducto extends Component {
       varianteTipoId
     } = this.state;
 
-    const { categorias, marcas, subcategorias, varianteTipos } = this.props;
+    const {
+      categorias,
+      marcas,
+      subcategorias,
+      varianteTipos,
+      isFetching
+    } = this.props;
 
     return (
       <div>
         <h1>Nuevo Producto</h1>
-        <form onSubmit={this.onSubmit}>
-          <ProductoDefault
-            nombre={nombre}
-            marca={marca}
-            categoria={categoria}
-            sub_categoria={sub_categoria}
-            descripcion={descripcion}
-            categorias={categorias}
-            marcas={marcas}
-            subcategorias={subcategorias}
-            onChange={this.onChange.bind(this)}
-          />
-
-          <div id="accordion">
-            <ProductoIndividual
-              cantidad={cantidad}
-              precio={precio}
-              codigo_de_barras={codigo_de_barras}
-              toggle={this.toggle.bind(this)}
+        <Loader loaded={isFetching}>
+          <form onSubmit={this.onSubmit}>
+            <ProductoDefault
+              nombre={nombre}
+              marca={marca}
+              categoria={categoria}
+              sub_categoria={sub_categoria}
+              descripcion={descripcion}
+              categorias={categorias}
+              marcas={marcas}
+              subcategorias={subcategorias}
               onChange={this.onChange.bind(this)}
             />
-            <ProductoVariantes
-              variantes={variantes}
-              varianteTipos={varianteTipos}
-              varianteTipoId={varianteTipoId}
-              toggle={this.toggle.bind(this)}
-              varianteTipoOnChange={this.varianteTipoOnChange.bind(this)}
-              varianteOnChange={this.varianteOnChange.bind(this)}
-              handleRemoveVariante={this.handleRemoveVariante.bind(this)}
-              handleAddVariante={this.handleAddVariante.bind(this)}
-            />
-          </div>
-          <div className="row-12 mt-5 pt-5 pb-5 mb-5">
-            <hr />
-            <Link to={`/producto`} className="btn btn-secondary">
-              Volver
-            </Link>
-            <button type="submit" className="btn btn-success float-right">
-              Agregar producto
-            </button>
-          </div>
-        </form>
+
+            <div id="accordion">
+              <ProductoIndividual
+                cantidad={cantidad}
+                precio={precio}
+                codigo_de_barras={codigo_de_barras}
+                toggle={this.toggle.bind(this)}
+                onChange={this.onChange.bind(this)}
+              />
+              <ProductoVariantes
+                variantes={variantes}
+                varianteTipos={varianteTipos}
+                varianteTipoId={varianteTipoId}
+                toggle={this.toggle.bind(this)}
+                varianteTipoOnChange={this.varianteTipoOnChange.bind(this)}
+                varianteOnChange={this.varianteOnChange.bind(this)}
+                handleRemoveVariante={this.handleRemoveVariante.bind(this)}
+                handleAddVariante={this.handleAddVariante.bind(this)}
+              />
+            </div>
+            <div className="row-12 mt-5 pt-5 pb-5 mb-5">
+              <hr />
+              <Link to={`/producto`} className="btn btn-secondary">
+                Volver
+              </Link>
+              <button type="submit" className="btn btn-success float-right">
+                Agregar producto
+              </button>
+            </div>
+          </form>
+        </Loader>
       </div>
     );
   }
 }
+const loadingSelector = createLoadingSelector(["FETCH_CATEGORIAS"]);
 
 NewProducto.propTypes = {
   categorias: PropTypes.array.isRequired,
   marcas: PropTypes.array.isRequired,
   subcategorias: PropTypes.array.isRequired,
   varianteTipos: PropTypes.array.isRequired,
-  addProducto: PropTypes.func.isRequired
+  addProducto: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
   categorias: state.producto.categorias,
   marcas: state.producto.marcas,
   subcategorias: state.producto.subcategorias,
-  varianteTipos: state.producto.varianteTipos
+  varianteTipos: state.producto.varianteTipos,
+  loading: state.loading,
+  isFetching: loadingSelector(state)
 });
 
 export default connect(
