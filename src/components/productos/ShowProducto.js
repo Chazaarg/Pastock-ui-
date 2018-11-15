@@ -7,12 +7,20 @@ import { createLoadingSelector } from "../../helpers/CreateLoadingSelector";
 import Loader from "react-loader";
 
 class ShowProducto extends Component {
+  state = {};
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.getProducto(id);
   }
 
-  //TODO: Que se reinicie el estado de loading.
+  static getDerivedStateFromProps(props, state) {
+    const { loading } = props;
+    //Cuando se sale, le asigno false a FETCH_PRODUCTO, para que vuelva a cargar la página al volver.
+    if (loading.FETCH_PRODUCTO) {
+      return (loading["FETCH_PRODUCTO"] = false);
+    }
+    return state;
+  }
 
   render() {
     const { producto, isFetching } = this.props;
@@ -23,7 +31,7 @@ class ShowProducto extends Component {
             <div className="col-9">
               <h1>
                 {producto.nombre}{" "}
-                {producto.marca ? "-" + producto.marca.nombre : null}
+                {producto.marca ? "- " + producto.marca.nombre : null}
               </h1>
               <h6 className="text-muted mt-2">
                 {producto.categoria ? producto.categoria.nombre : null}{" "}

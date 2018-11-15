@@ -7,8 +7,18 @@ import { createLoadingSelector } from "../../helpers/CreateLoadingSelector";
 import Loader from "react-loader";
 
 class Productos extends Component {
+  state = {};
   componentDidMount() {
     this.props.getProductos();
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const { loading } = props;
+    //Cuando se sale, le asigno false a FETCH_PRODUCTOS, para que vuelva a cargar la página al volver.
+    if (loading.FETCH_PRODUCTOS) {
+      return (loading["FETCH_PRODUCTOS"] = false);
+    }
+    return state;
   }
 
   render() {
@@ -126,7 +136,8 @@ Productos.propTypes = {
 
 const mapStateToProps = state => ({
   productos: state.producto.productos,
-  isFetching: loadingSelector(state)
+  isFetching: loadingSelector(state),
+  loading: state.loading
 });
 
 export default connect(

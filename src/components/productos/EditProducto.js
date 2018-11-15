@@ -34,6 +34,13 @@ class EditProducto extends Component {
     varianteTipoId: "",
     tieneVariante: false
   };
+  componentWillUnmount() {
+    const { loading } = this.props;
+    //Cuando se sale, le asigno false a FETCH_PRODUCTO, para que vuelva a cargar la página al volver.
+    if (loading.FETCH_PRODUCTO) {
+      return (loading["FETCH_CATEGORIAS"] = false);
+    }
+  }
   //TODO: Que se reinicie el estado de loading, al menos FETCH_PRODUCTO.
   componentWillReceiveProps(nextProps, nextState) {
     const {
@@ -311,7 +318,7 @@ class EditProducto extends Component {
   }
 }
 
-const loadingSelector = createLoadingSelector(["FETCH_SUBCATEGORIAS"]);
+const loadingSelector = createLoadingSelector(["FETCH_CATEGORIAS"]);
 
 EditProducto.propTypes = {
   producto: PropTypes.object.isRequired,
