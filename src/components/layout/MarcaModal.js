@@ -37,7 +37,12 @@ class MarcaModal extends Component {
 
     //Añadir marca
 
-    this.props.addMarca(newMarca);
+    this.props.addMarca(newMarca).then(
+      //Espera a que la marca se añada al DOM y luego la busca para setearla al state.
+      setTimeout(() => {
+        this.props.newProp("marca");
+      }, 1000)
+    );
     this.setState({
       nombre: ""
     });

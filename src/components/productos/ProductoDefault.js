@@ -13,7 +13,8 @@ const ProductoDefault = props => {
     categorias,
     marcas,
     subcategorias,
-    onChange
+    onChange,
+    newProp
   } = props;
   return (
     <React.Fragment>
@@ -34,7 +35,7 @@ const ProductoDefault = props => {
             <div className="form-group col-md-4">
               <select
                 name="marca"
-                value={marca ? marca.id : 0}
+                value={marca.id ? marca.id : marca}
                 className="form-control"
                 onChange={onChange}
               >
@@ -45,7 +46,7 @@ const ProductoDefault = props => {
                   </option>
                 ))}
               </select>
-              <MarcaModal />
+              <MarcaModal newProp={newProp.bind(this)} />
             </div>
           </div>
         </div>
@@ -57,7 +58,7 @@ const ProductoDefault = props => {
             <div className="form-group col-md-6">
               <select
                 name="categoria"
-                value={categoria ? categoria.id : 0}
+                value={categoria.id ? categoria.id : categoria}
                 className="form-control"
                 onChange={onChange}
               >
@@ -68,12 +69,12 @@ const ProductoDefault = props => {
                   </option>
                 ))}
               </select>
-              <CategoriaModal />
+              <CategoriaModal newProp={newProp.bind(this)} />
             </div>
             <div className="form-group col-md-4">
               <select
                 name="sub_categoria"
-                value={sub_categoria ? sub_categoria.id : 0}
+                value={sub_categoria.id ? sub_categoria.id : sub_categoria}
                 className="form-control"
                 onChange={onChange}
               >
@@ -105,7 +106,7 @@ const ProductoDefault = props => {
                   : null}
                 }
               </select>
-              <SubCategoriaModal />
+              <SubCategoriaModal newProp={newProp.bind(this)} />
             </div>
           </div>
         </div>

@@ -37,7 +37,12 @@ class CategoriaModal extends Component {
 
     //Añadir categoria
 
-    this.props.addCategoria(newCategoria);
+    this.props.addCategoria(newCategoria).then(
+      //Espera a que la marca se añada al DOM y luego la busca para setearla al state.
+      setTimeout(() => {
+        this.props.newProp("categoria");
+      }, 1000)
+    );
     this.setState({
       nombre: ""
     });

@@ -57,7 +57,6 @@ class NewProducto extends Component {
       varianteTipoId,
       variantes
     } = this.state;
-    console.log(marca);
 
     let nuevoProducto = {};
 
@@ -156,6 +155,42 @@ class NewProducto extends Component {
       tieneVariante: b
     });
   };
+  newProp = (val, categoriaId) => {
+    let select;
+    document.querySelectorAll("select.form-control").forEach(element => {
+      if (element.name === val) {
+        select = element;
+      }
+      return select;
+    });
+
+    let values = [];
+    select.querySelectorAll("option").forEach(element => {
+      values.push(Number(element.value));
+    });
+    values.shift();
+    values.sort((x, y) => {
+      return y - x;
+    });
+    switch (val) {
+      case "marca":
+        this.setState({ marca: { id: values[0] } });
+        break;
+      case "categoria":
+        if (categoriaId) {
+          this.setState({ categoria: { id: categoriaId } });
+        } else {
+          this.setState({ categoria: { id: values[0] } });
+        }
+        break;
+      case "sub_categoria":
+        console.log(values[0]);
+        this.setState({ sub_categoria: values[0] });
+        break;
+      default:
+        break;
+    }
+  };
 
   render() {
     const {
@@ -194,6 +229,7 @@ class NewProducto extends Component {
               marcas={marcas}
               subcategorias={subcategorias}
               onChange={this.onChange.bind(this)}
+              newProp={this.newProp.bind(this)}
             />
 
             <div id="accordion">

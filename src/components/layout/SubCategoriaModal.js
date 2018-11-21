@@ -35,15 +35,24 @@ class SubCategoriaModal extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-
+    const { nombre, categoria } = this.state;
+    console.log(categoria);
     const newSubCategoria = {
-      nombre: this.state.nombre,
-      categoria: this.state.categoria
+      nombre,
+      categoria
     };
 
     //Añadir subCategoria
 
-    this.props.addSubCategoria(newSubCategoria);
+    this.props.addSubCategoria(newSubCategoria).then(
+      () => {
+        this.props.newProp("categoria", categoria);
+        setTimeout(() => {
+          this.props.newProp("sub_categoria");
+        }, 1000);
+      }
+      //Espera a que la marca se añada al DOM y luego la busca para setearla al state.
+    );
     this.setState({
       nombre: "",
       categoria: ""
