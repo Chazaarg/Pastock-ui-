@@ -10,7 +10,8 @@ import {
   ADD_SUBCATEGORIA,
   FETCH_VARIANTETIPOS,
   UPDATE_PRODUCTO,
-  DELETE_PRODUCTO
+  DELETE_PRODUCTO,
+  ADD_VARIANTETIPO
 } from "./types";
 import axios from "axios";
 
@@ -83,6 +84,14 @@ export const addMarca = marca => async dispatch => {
   const res = await axios.post("/marca/new", marca);
   dispatch({
     type: ADD_MARCA,
+    payload: res.data
+  });
+};
+
+export const addVarianteTipo = varianteTipo => async dispatch => {
+  const res = await axios.post("/variante-tipo/new", varianteTipo);
+  dispatch({
+    type: ADD_VARIANTETIPO,
     payload: res.data
   });
 };

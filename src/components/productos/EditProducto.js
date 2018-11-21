@@ -60,9 +60,9 @@ class EditProducto extends Component {
     this.setState({
       nombre,
       descripcion,
-      marca,
-      categoria,
-      sub_categoria,
+      marca: marca ? marca : "",
+      categoria: categoria ? categoria : "",
+      sub_categoria: sub_categoria ? sub_categoria : "",
       precio,
       codigo_de_barras,
       cantidad,
@@ -228,6 +228,41 @@ class EditProducto extends Component {
     this.props.deleteProducto(id);
     this.props.history.push("/producto");
   };
+  newProp = (val, categoriaId) => {
+    let select;
+    document.querySelectorAll("select.form-control").forEach(element => {
+      if (element.name === val) {
+        select = element;
+      }
+      return select;
+    });
+
+    let values = [];
+    select.querySelectorAll("option").forEach(element => {
+      values.push(Number(element.value));
+    });
+    values.shift();
+    values.sort((x, y) => {
+      return y - x;
+    });
+    switch (val) {
+      case "marca":
+        this.setState({ marca: { id: values[0] } });
+        break;
+      case "categoria":
+        if (categoriaId) {
+          this.setState({ categoria: { id: categoriaId } });
+        } else {
+          this.setState({ categoria: { id: values[0] } });
+        }
+        break;
+      case "sub_categoria":
+        this.setState({ sub_categoria: values[0] });
+        break;
+      default:
+        break;
+    }
+  };
 
   render() {
     const {
@@ -280,6 +315,7 @@ class EditProducto extends Component {
               marcas={marcas}
               subcategorias={subcategorias}
               onChange={this.onChange.bind(this)}
+              newProp={this.newProp.bind(this)}
             />
 
             <div id="accordion">

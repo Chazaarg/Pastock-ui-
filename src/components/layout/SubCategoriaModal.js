@@ -36,7 +36,6 @@ class SubCategoriaModal extends Component {
   onSubmit = e => {
     e.preventDefault();
     const { nombre, categoria } = this.state;
-    console.log(categoria);
     const newSubCategoria = {
       nombre,
       categoria
@@ -125,10 +124,11 @@ class SubCategoriaModal extends Component {
   }
 }
 SubCategoriaModal.propTypes = {
-  categorias: PropTypes.array.isRequired
+  categorias: PropTypes.array.isRequired,
+  addSubCategoria: PropTypes.func.isRequired,
+  getCategorias: PropTypes.func.isRequired
 };
 const mapStateToProps = state => ({
-  subCategoria: state.subCategoria,
   categorias: state.producto.categorias
 });
 

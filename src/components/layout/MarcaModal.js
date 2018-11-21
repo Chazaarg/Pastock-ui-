@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { addMarca } from "../../actions/productosActions";
 import {
@@ -89,12 +90,10 @@ class MarcaModal extends Component {
     );
   }
 }
-
-const mapStateToProps = state => ({
-  marca: state.marca
-});
-
+MarcaModal.propTypes = {
+  addMarca: PropTypes.func.isRequired
+};
 export default connect(
-  mapStateToProps,
+  null,
   { addMarca }
 )(MarcaModal);

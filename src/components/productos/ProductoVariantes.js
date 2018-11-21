@@ -1,4 +1,5 @@
 import React from "react";
+import TipoVarianteModal from "../layout/TipoVarianteModal";
 
 const ProductoVariantes = props => {
   const {
@@ -50,6 +51,7 @@ const ProductoVariantes = props => {
                 </option>
               ))}
             </select>
+            <TipoVarianteModal />
           </div>
           {variantes
             ? variantes.map((variante, idx) => (

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { addCategoria } from "../../actions/productosActions";
+import PropTypes from "prop-types";
+import { addVarianteTipo } from "../../actions/productosActions";
 import {
   Modal,
   ModalHeader,
@@ -13,7 +13,7 @@ import {
   Input
 } from "reactstrap";
 
-class CategoriaModal extends Component {
+class TipoVarianteModal extends Component {
   state = {
     modal: false,
     nombre: ""
@@ -32,18 +32,13 @@ class CategoriaModal extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const newCategoria = {
+    const newVarianteTipo = {
       nombre: this.state.nombre
     };
 
-    //Añadir categoria
+    //Añadir varianteTipo
 
-    this.props.addCategoria(newCategoria).then(
-      //Espera a que la marca se añada al DOM y luego la busca para setearla al state.
-      setTimeout(() => {
-        this.props.newProp("categoria");
-      }, 1000)
-    );
+    this.props.addVarianteTipo(newVarianteTipo);
     this.setState({
       nombre: ""
     });
@@ -58,18 +53,20 @@ class CategoriaModal extends Component {
           className="text-secondary btn btn-link"
           onClick={this.toggle}
         >
-          <small>Añadir nueva categoria</small>
+          <small>Añadir nuevo tipo de variante</small>
         </button>
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
-          <ModalHeader toggle={this.toggle}>Añadir nueva categoria</ModalHeader>
+          <ModalHeader toggle={this.toggle}>
+            Añadir tipo de variante
+          </ModalHeader>
           <ModalBody>
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
-                <Label for="categoria">Categoria</Label>
+                <Label for="tipoDeVariante">Tipo de Variante</Label>
                 <Input
                   type="text"
                   name="nombre"
-                  id="categoria"
+                  id="tipoDeVariante"
                   placeholder="Nombre..."
                   onChange={this.onChange}
                 />
@@ -80,7 +77,7 @@ class CategoriaModal extends Component {
                   style={{ marginTop: "2rem" }}
                   block
                 >
-                  Añadir categoria
+                  Añadir tipo de variante
                 </Button>
               </FormGroup>
             </Form>
@@ -90,10 +87,11 @@ class CategoriaModal extends Component {
     );
   }
 }
-CategoriaModal.propTypes = {
-  addCategoria: PropTypes.func.isRequired
+TipoVarianteModal.propTypes = {
+  addVarianteTipo: PropTypes.func.isRequired
 };
+
 export default connect(
   null,
-  { addCategoria }
-)(CategoriaModal);
+  { addVarianteTipo }
+)(TipoVarianteModal);

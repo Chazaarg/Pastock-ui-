@@ -184,7 +184,6 @@ class NewProducto extends Component {
         }
         break;
       case "sub_categoria":
-        console.log(values[0]);
         this.setState({ sub_categoria: values[0] });
         break;
       default:
@@ -249,6 +248,7 @@ class NewProducto extends Component {
                 varianteOnChange={this.varianteOnChange.bind(this)}
                 handleRemoveVariante={this.handleRemoveVariante.bind(this)}
                 handleAddVariante={this.handleAddVariante.bind(this)}
+                newProp={this.newProp.bind(this)}
               />
             </div>
             <div className="row-12 mt-5 pt-5 pb-5 mb-5">
