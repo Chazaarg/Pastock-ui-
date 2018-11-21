@@ -14,6 +14,7 @@ import ProductoIndividual from "./ProductoIndividual";
 import ProductoVariantes from "./ProductoVariantes";
 import { createLoadingSelector } from "../../helpers/CreateLoadingSelector";
 import Loader from "react-loader";
+import { notifyUser } from "../../actions/notifyActions";
 
 class NewProducto extends Component {
   componentDidMount() {
@@ -38,6 +39,14 @@ class NewProducto extends Component {
     varianteTipoId: "",
     tieneVariante: false
   };
+
+  componentWillUnmount() {
+    //Esto hace un clear a notify cada vez que cambie de ruta.
+    const { message } = this.props.notify;
+    const { notifyUser } = this.props;
+
+    message && notifyUser(null, null, null);
+  }
 
   onSubmit = e => {
     e.preventDefault();
@@ -210,7 +219,8 @@ class NewProducto extends Component {
       marcas,
       subcategorias,
       varianteTipos,
-      isFetching
+      isFetching,
+      notify
     } = this.props;
 
     return (
@@ -229,6 +239,7 @@ class NewProducto extends Component {
               subcategorias={subcategorias}
               onChange={this.onChange.bind(this)}
               newProp={this.newProp.bind(this)}
+              notify={notify}
             />
 
             <div id="accordion">
@@ -278,6 +289,7 @@ NewProducto.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  notify: state.notify,
   categorias: state.producto.categorias,
   marcas: state.producto.marcas,
   subcategorias: state.producto.subcategorias,
@@ -288,5 +300,12 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getMarcas, getCategorias, getSubcategorias, addProducto, getVarianteTipos }
+  {
+    notifyUser,
+    getMarcas,
+    getCategorias,
+    getSubcategorias,
+    addProducto,
+    getVarianteTipos
+  }
 )(NewProducto);

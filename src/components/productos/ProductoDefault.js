@@ -2,6 +2,7 @@ import React from "react";
 import MarcaModal from "../layout/MarcaModal";
 import CategoriaModal from "../layout/CategoriaModal";
 import SubCategoriaModal from "../layout/SubCategoriaModal";
+import Alert from "../layout/Alert";
 
 const ProductoDefault = props => {
   const {
@@ -14,10 +15,19 @@ const ProductoDefault = props => {
     marcas,
     subcategorias,
     onChange,
-    newProp
+    newProp,
+    notify
   } = props;
   return (
     <React.Fragment>
+      {//Si hay un mensaje, entonces lo muestro en la alerta.
+      notify.message ? (
+        <Alert
+          message={notify.message}
+          messageType={notify.messageType}
+          errors={notify.errors}
+        />
+      ) : null}
       <div className="card border-light mt-5">
         <div className="card-header">Nombre y Marca</div>
         <div className="card-body">

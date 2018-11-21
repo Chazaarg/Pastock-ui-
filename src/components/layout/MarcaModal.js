@@ -55,7 +55,7 @@ class MarcaModal extends Component {
       <div>
         <button
           type="button"
-          className="text-secondary btn btn-link"
+          className="text-secondary btn btn-link float-right"
           onClick={this.toggle}
         >
           <small>Añadir nueva marca</small>

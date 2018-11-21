@@ -11,7 +11,8 @@ import {
   FETCH_VARIANTETIPOS,
   UPDATE_PRODUCTO,
   DELETE_PRODUCTO,
-  ADD_VARIANTETIPO
+  ADD_VARIANTETIPO,
+  NOTIFY_USER
 } from "./types";
 import axios from "axios";
 
@@ -33,11 +34,26 @@ export const deleteProducto = id => async dispatch => {
 };
 
 export const addProducto = producto => async dispatch => {
-  const res = await axios.post("/producto/new", producto);
-  dispatch({
-    type: ADD_PRODUCTO,
-    payload: res.data
-  });
+  try {
+    const res = await axios.post("/producto/new", producto);
+    dispatch({
+      type: ADD_PRODUCTO,
+      payload: res.data
+    });
+    dispatch({
+      type: NOTIFY_USER,
+      errors: [],
+      message: res.data.message,
+      messageType: res.data.messageType
+    });
+  } catch (error) {
+    dispatch({
+      type: NOTIFY_USER,
+      message: error.response.data.message,
+      messageType: error.response.data.messageType,
+      errors: error.response.data.errors
+    });
+  }
 };
 
 export const updateProducto = producto => async dispatch => {
