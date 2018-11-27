@@ -40,12 +40,14 @@ export const registerUser = user => async dispatch => {
       type: REGISTER_USER,
       payload: res.data.user
     });
+    /* TODO: puedo mostrar un mensaje tras ser redireccionado.
     dispatch({
       type: NOTIFY_USER,
       errors: [],
       message: res.data.message,
       messageType: res.data.messageType
     });
+    */
   } catch (error) {
     dispatch({
       type: NOTIFY_USER,
