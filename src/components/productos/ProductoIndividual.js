@@ -35,10 +35,10 @@ const ProductoIndividual = props => {
             <div className="col-sm-10">
               <input
                 type="number"
-                className="form-control"
+                className="form-control indInputs"
                 name="cantidad"
                 placeholder="Cantidad"
-                value={cantidad ? cantidad : 0}
+                value={cantidad}
                 onChange={onChange}
               />
             </div>
@@ -50,10 +50,10 @@ const ProductoIndividual = props => {
             <div className="col-sm-10">
               <input
                 type="number"
-                className="form-control"
+                className="form-control indInputs"
                 name="precio"
                 placeholder="Precio"
-                value={precio ? precio : 0}
+                value={precio}
                 onChange={onChange}
               />
             </div>
@@ -68,7 +68,7 @@ const ProductoIndividual = props => {
             <div className="col-sm-10">
               <input
                 type="text"
-                className="form-control"
+                className="form-control indInputs"
                 name="codigo_de_barras"
                 placeholder="Código de barras"
                 value={codigo_de_barras ? codigo_de_barras : ""}

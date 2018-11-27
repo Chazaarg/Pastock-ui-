@@ -15,6 +15,7 @@ import ProductoVariantes from "./ProductoVariantes";
 import { createLoadingSelector } from "../../helpers/CreateLoadingSelector";
 import Loader from "react-loader";
 import { notifyUser } from "../../actions/notifyActions";
+import ProductoAlert from "../layout/ProductoAlert";
 
 class NewProducto extends Component {
   componentDidMount() {
@@ -99,22 +100,27 @@ class NewProducto extends Component {
       };
     }
 
-    this.props.addProducto(nuevoProducto);
-
-    //Clear state
-
-    this.setState({
-      nombre: "",
-      descripcion: "",
-      marca: "",
-      categoria: "",
-      sub_categoria: "",
-      precio: 0,
-      codigo_de_barras: "",
-      cantidad: 0,
-      precio_compra: "",
-      precio_real: "",
-      variantes: []
+    this.props.addProducto(nuevoProducto).then(() => {
+      //Clear state if success
+      if (this.props.notify.messageType === "success") {
+        this.setState({
+          nombre: "",
+          descripcion: "",
+          marca: "",
+          categoria: "",
+          sub_categoria: "",
+          precio: 0,
+          codigo_de_barras: "",
+          cantidad: 0,
+          precio_compra: "",
+          precio_real: "",
+          variantes: []
+        });
+      }
+      //Luego de unos segundos borro el mensaje
+      setTimeout(() => {
+        this.props.notifyUser(null, null, null);
+      }, 10000);
     });
   };
 
@@ -222,10 +228,17 @@ class NewProducto extends Component {
       isFetching,
       notify
     } = this.props;
-
     return (
       <div>
         <h1>Nuevo Producto</h1>
+        {//Si hay un mensaje, entonces lo muestro en la alerta.
+        notify.message ? (
+          <ProductoAlert
+            message={notify.message}
+            messageType={notify.messageType}
+            errors={notify.errors}
+          />
+        ) : null}
         <Loader loaded={isFetching}>
           <form onSubmit={this.onSubmit}>
             <ProductoDefault
@@ -239,7 +252,6 @@ class NewProducto extends Component {
               subcategorias={subcategorias}
               onChange={this.onChange.bind(this)}
               newProp={this.newProp.bind(this)}
-              notify={notify}
             />
 
             <div id="accordion">
@@ -285,7 +297,8 @@ NewProducto.propTypes = {
   subcategorias: PropTypes.array.isRequired,
   varianteTipos: PropTypes.array.isRequired,
   addProducto: PropTypes.func.isRequired,
-  isFetching: PropTypes.bool.isRequired
+  isFetching: PropTypes.bool.isRequired,
+  notifyUser: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

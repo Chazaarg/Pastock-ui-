@@ -1,7 +1,7 @@
 import { NOTIFY_USER } from "../actions/types";
 
 const initialState = {
-  errors: [],
+  errors: null,
   message: null,
   messageType: null
 };

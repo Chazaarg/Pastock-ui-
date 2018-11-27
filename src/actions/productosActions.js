@@ -38,8 +38,9 @@ export const addProducto = producto => async dispatch => {
     const res = await axios.post("/producto/new", producto);
     dispatch({
       type: ADD_PRODUCTO,
-      payload: res.data
+      payload: res.data.producto
     });
+    //Success
     dispatch({
       type: NOTIFY_USER,
       errors: [],
@@ -57,11 +58,27 @@ export const addProducto = producto => async dispatch => {
 };
 
 export const updateProducto = producto => async dispatch => {
-  const res = await axios.put(`/producto/${producto.id}/edit`, producto);
-  dispatch({
-    type: UPDATE_PRODUCTO,
-    payload: res.data
-  });
+  try {
+    const res = await axios.put(`/producto/${producto.id}/edit`, producto);
+    dispatch({
+      type: UPDATE_PRODUCTO,
+      payload: res.data.producto
+    });
+    //Success
+    dispatch({
+      type: NOTIFY_USER,
+      errors: [],
+      message: res.data.message,
+      messageType: res.data.messageType
+    });
+  } catch (error) {
+    dispatch({
+      type: NOTIFY_USER,
+      message: error.response.data.message,
+      messageType: error.response.data.messageType,
+      errors: error.response.data.errors
+    });
+  }
 };
 
 export const getCategorias = () => async dispatch => {

@@ -2,7 +2,6 @@ import React from "react";
 import MarcaModal from "../layout/MarcaModal";
 import CategoriaModal from "../layout/CategoriaModal";
 import SubCategoriaModal from "../layout/SubCategoriaModal";
-import Alert from "../layout/Alert";
 
 const ProductoDefault = props => {
   const {
@@ -15,19 +14,10 @@ const ProductoDefault = props => {
     marcas,
     subcategorias,
     onChange,
-    newProp,
-    notify
+    newProp
   } = props;
   return (
     <React.Fragment>
-      {//Si hay un mensaje, entonces lo muestro en la alerta.
-      notify.message ? (
-        <Alert
-          message={notify.message}
-          messageType={notify.messageType}
-          errors={notify.errors}
-        />
-      ) : null}
       <div className="card border-light mt-5">
         <div className="card-header">Nombre y Marca</div>
         <div className="card-body">
@@ -37,7 +27,7 @@ const ProductoDefault = props => {
                 type="text"
                 placeholder="Nombre..."
                 name="nombre"
-                className="form-control"
+                className="form-control productoDefault"
                 value={nombre}
                 onChange={onChange}
               />
@@ -46,7 +36,7 @@ const ProductoDefault = props => {
               <select
                 name="marca"
                 value={marca.id ? marca.id : marca}
-                className="form-control"
+                className="form-control productoDefault"
                 onChange={onChange}
               >
                 <option>Elige una marca...</option>
@@ -69,7 +59,7 @@ const ProductoDefault = props => {
               <select
                 name="categoria"
                 value={categoria.id ? categoria.id : categoria}
-                className="form-control"
+                className="form-control productoDefault"
                 onChange={onChange}
               >
                 <option>Elige una categoría...</option>
@@ -85,7 +75,7 @@ const ProductoDefault = props => {
               <select
                 name="sub_categoria"
                 value={sub_categoria.id ? sub_categoria.id : sub_categoria}
-                className="form-control"
+                className="form-control productoDefault"
                 onChange={onChange}
               >
                 <option>Elige una sub categoría...</option>
@@ -129,7 +119,7 @@ const ProductoDefault = props => {
         <div className="card-body">
           <div className="form-group">
             <textarea
-              className="form-control"
+              className="form-control productoDefault"
               name="descripcion"
               rows="3"
               value={descripcion ? descripcion : ""}

@@ -40,7 +40,7 @@ const ProductoVariantes = props => {
           <div className="form-group col-md-4">
             <select
               name="varianteTipo"
-              className="form-control"
+              className="form-control varInputs"
               onChange={varianteTipoOnChange}
               value={varianteTipoId}
             >
@@ -65,7 +65,7 @@ const ProductoVariantes = props => {
                     <div className="col-sm-10">
                       <input
                         type="text"
-                        className="form-control"
+                        className="form-control varInputs"
                         name="nombre"
                         placeholder="Nombre"
                         value={variante.nombre}
@@ -83,7 +83,7 @@ const ProductoVariantes = props => {
                     <div className="col-sm-10">
                       <input
                         type="number"
-                        className="form-control"
+                        className="form-control varInputs"
                         name="cantidad"
                         placeholder="Cantidad"
                         value={variante.cantidad}
@@ -98,7 +98,7 @@ const ProductoVariantes = props => {
                     <div className="col-sm-10">
                       <input
                         type="number"
-                        className="form-control"
+                        className="form-control varInputs"
                         name="precio"
                         placeholder="Precio"
                         value={variante.precio}
@@ -116,7 +116,7 @@ const ProductoVariantes = props => {
                     <div className="col-sm-10">
                       <input
                         type="text"
-                        className="form-control"
+                        className="form-control varInputs"
                         name="codigo_de_barras"
                         placeholder="Código de barras"
                         value={variante.codigo_de_barras}

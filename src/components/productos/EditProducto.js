@@ -17,6 +17,8 @@ import ProductoIndividual from "./ProductoIndividual";
 import ProductoVariantes from "./ProductoVariantes";
 import { createLoadingSelector } from "../../helpers/CreateLoadingSelector";
 import Loader from "react-loader";
+import ProductoAlert from "../layout/ProductoAlert";
+import { notifyUser } from "../../actions/notifyActions";
 
 class EditProducto extends Component {
   state = {
@@ -35,13 +37,18 @@ class EditProducto extends Component {
     tieneVariante: false
   };
   componentWillUnmount() {
+    //Esto hace un clear a notify cada vez que cambie de ruta.
+    const { message } = this.props.notify;
+    const { notifyUser } = this.props;
+
+    message && notifyUser(null, null, null);
+
     const { loading } = this.props;
     //Cuando se sale, le asigno false a FETCH_PRODUCTO, para que vuelva a cargar la página al volver.
     if (loading.FETCH_PRODUCTO) {
       return (loading["FETCH_CATEGORIAS"] = false);
     }
   }
-  //TODO: Que se reinicie el estado de loading, al menos FETCH_PRODUCTO.
   componentWillReceiveProps(nextProps, nextState) {
     const {
       nombre,
@@ -56,6 +63,8 @@ class EditProducto extends Component {
       precio_real,
       variantes
     } = nextProps.producto;
+
+    //BUG:Esto se setea después de que la página termine de cargar (despues del spinner)...
 
     this.setState({
       nombre,
@@ -82,9 +91,7 @@ class EditProducto extends Component {
     } else {
       this.setState({
         tieneVariante: true,
-        varianteTipoId: this.state.variantes
-          ? this.state.variantes[0]
-          : null
+        varianteTipoId: this.state.variantes[0]
           ? this.state.variantes[0].variante_tipo.id
           : null
       });
@@ -158,24 +165,30 @@ class EditProducto extends Component {
         precio_real
       };
     }
-    this.props.updateProducto(editProducto);
-
-    //Clear state
-
-    this.setState({
-      nombre: "",
-      descripcion: "",
-      marca: "",
-      categoria: "",
-      sub_categoria: "",
-      precio: 0,
-      codigo_de_barras: "",
-      cantidad: 0,
-      precio_compra: "",
-      precio_real: "",
-      variantes: []
+    this.props.updateProducto(editProducto).then(() => {
+      //Me lleva al gridview si develve "success".
+      //TODO: Quizás quiera que aparezca un cartel de que el producto fue importado con éxito en el gridview
+      if (this.props.notify.messageType === "success") {
+        this.props.history.push("/producto");
+      } else {
+        //Si hay algún error, dejo el state tal y como estaba ya que componentWillReceiveProps lo reinicia.
+        this.setState({
+          nombre,
+          descripcion,
+          marca,
+          categoria,
+          sub_categoria,
+          precio,
+          codigo_de_barras,
+          cantidad,
+          precio_compra,
+          precio_real,
+          tieneVariante,
+          varianteTipoId,
+          variantes
+        });
+      }
     });
-    this.props.history.push("/producto");
   };
 
   varianteOnChange = idx => e => {
@@ -283,15 +296,12 @@ class EditProducto extends Component {
       marcas,
       subcategorias,
       varianteTipos,
-      isFetching
+      isFetching,
+      notify
     } = this.props;
-
     return (
       <div>
-        <div className="row">
-          <div className="col-9">
-            <h1>Editar producto</h1>
-          </div>
+        <div className="row-12">
           <div className="col-3 float-right">
             <button
               type="button"
@@ -300,6 +310,19 @@ class EditProducto extends Component {
             >
               Eliminar
             </button>
+          </div>
+        </div>
+        <div className="row-12">
+          <div className="col-12">
+            <h1>Editar producto</h1>
+            {//Si hay un mensaje, entonces lo muestro en la alerta.
+            notify.message ? (
+              <ProductoAlert
+                message={notify.message}
+                messageType={notify.messageType}
+                errors={notify.errors}
+              />
+            ) : null}
           </div>
         </div>
 
@@ -366,22 +389,26 @@ EditProducto.propTypes = {
   varianteTipos: PropTypes.array.isRequired,
   addProducto: PropTypes.func.isRequired,
   deleteProducto: PropTypes.func.isRequired,
-  isFetching: PropTypes.bool.isRequired
+  isFetching: PropTypes.bool.isRequired,
+  notify: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
+  notify: state.notify,
   producto: state.producto.producto,
   categorias: state.producto.categorias,
   marcas: state.producto.marcas,
   subcategorias: state.producto.subcategorias,
   varianteTipos: state.producto.varianteTipos,
   loading: state.loading,
-  isFetching: loadingSelector(state)
+  isFetching: loadingSelector(state),
+  notifyUser: PropTypes.func.isRequired
 });
 
 export default connect(
   mapStateToProps,
   {
+    notifyUser,
     getMarcas,
     getCategorias,
     getSubcategorias,
