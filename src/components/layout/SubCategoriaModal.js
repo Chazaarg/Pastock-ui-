@@ -88,7 +88,13 @@ class SubCategoriaModal extends Component {
                   name="categoria"
                   id="categoriaPerteneciente"
                   onChange={this.onChange}
-                  value={this.state.categoria}
+                  value={
+                    this.state.categoria === ""
+                      ? this.props.categoria.id
+                        ? this.props.categoria.id
+                        : this.props.categoria
+                      : this.state.categoria
+                  }
                   className="modalInput"
                 >
                   <option>Elige una categoría...</option>

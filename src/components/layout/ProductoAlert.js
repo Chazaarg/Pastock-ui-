@@ -77,13 +77,25 @@ const ProductoAlert = props => {
     }
     //Si hay errores en los Modal...
     else {
-      if (errors.length > 0) {
+      if (errors !== null) {
         let modalInputs = document.getElementsByClassName("modalInput");
         modalInputs = Array.from(modalInputs);
-        modalInputs.forEach(input => {
+        modalInputs.forEach((input, idx) => {
+          //Primero me aseguro de eliminar errores y mensajes anteriores del DOM.
+          if (input.classList.contains("is-invalid")) {
+            input.classList.remove("is-invalid");
+            input.parentElement.removeChild(
+              input.parentElement.getElementsByClassName("text-danger")[idx]
+            );
+          }
+          //Creo el elemento small que contendrá el mensaje de error.
+          const small = document.createElement("small");
+          small.classList.add("float-right", "text-danger");
           errors.forEach(error => {
             if (error.value === input.name) {
               input.classList.add("is-invalid");
+              small.innerHTML = error.message;
+              input.parentElement.insertBefore(small, input);
             }
           });
         });

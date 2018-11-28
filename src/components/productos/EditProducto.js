@@ -339,6 +339,7 @@ class EditProducto extends Component {
               subcategorias={subcategorias}
               onChange={this.onChange.bind(this)}
               newProp={this.newProp.bind(this)}
+              notify={notify}
             />
 
             <div id="accordion">
@@ -358,6 +359,7 @@ class EditProducto extends Component {
                 varianteOnChange={this.varianteOnChange.bind(this)}
                 handleRemoveVariante={this.handleRemoveVariante.bind(this)}
                 handleAddVariante={this.handleAddVariante.bind(this)}
+                notify={notify}
               />
             </div>
 

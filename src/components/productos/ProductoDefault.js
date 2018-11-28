@@ -107,7 +107,11 @@ const ProductoDefault = props => {
                   : null}
                 }
               </select>
-              <SubCategoriaModal newProp={newProp.bind(this)} notify={notify} />
+              <SubCategoriaModal
+                newProp={newProp.bind(this)}
+                notify={notify}
+                categoria={categoria}
+              />
             </div>
           </div>
         </div>
