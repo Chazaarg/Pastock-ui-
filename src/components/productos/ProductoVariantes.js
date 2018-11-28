@@ -10,7 +10,8 @@ const ProductoVariantes = props => {
     varianteTipoId,
     varianteOnChange,
     handleRemoveVariante,
-    handleAddVariante
+    handleAddVariante,
+    notify
   } = props;
 
   return (
@@ -51,7 +52,7 @@ const ProductoVariantes = props => {
                 </option>
               ))}
             </select>
-            <TipoVarianteModal />
+            <TipoVarianteModal notify={notify} />
           </div>
           {variantes
             ? variantes.map((variante, idx) => (

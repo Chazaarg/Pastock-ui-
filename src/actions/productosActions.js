@@ -43,7 +43,7 @@ export const addProducto = producto => async dispatch => {
     //Success
     dispatch({
       type: NOTIFY_USER,
-      errors: [],
+      errors: null,
       message: res.data.message,
       messageType: res.data.messageType
     });
@@ -67,7 +67,7 @@ export const updateProducto = producto => async dispatch => {
     //Success
     dispatch({
       type: NOTIFY_USER,
-      errors: [],
+      errors: null,
       message: res.data.message,
       messageType: res.data.messageType
     });
@@ -90,11 +90,27 @@ export const getCategorias = () => async dispatch => {
   });
 };
 export const addCategoria = categoria => async dispatch => {
-  const res = await axios.post("/categoria/new", categoria);
-  dispatch({
-    type: ADD_CATEGORIA,
-    payload: res.data
-  });
+  try {
+    const res = await axios.post("/categoria/new", categoria);
+    dispatch({
+      type: ADD_CATEGORIA,
+      payload: res.data.categoria
+    });
+    //Success
+    dispatch({
+      type: NOTIFY_USER,
+      errors: null,
+      message: res.data.message,
+      messageType: res.data.messageType
+    });
+  } catch (error) {
+    dispatch({
+      type: NOTIFY_USER,
+      message: error.response.data.message,
+      messageType: error.response.data.messageType,
+      errors: error.response.data.errors
+    });
+  }
 };
 export const getSubcategorias = () => async dispatch => {
   const res = await axios.get("/subcategoria");
@@ -106,27 +122,75 @@ export const getSubcategorias = () => async dispatch => {
 };
 
 export const addSubCategoria = subCategoria => async dispatch => {
-  const res = await axios.post("/subcategoria/new", subCategoria);
-  dispatch({
-    type: ADD_SUBCATEGORIA,
-    payload: res.data
-  });
+  try {
+    const res = await axios.post("/subcategoria/new", subCategoria);
+    dispatch({
+      type: ADD_SUBCATEGORIA,
+      payload: res.data.subcategoria
+    });
+    //Success
+    dispatch({
+      type: NOTIFY_USER,
+      errors: null,
+      message: res.data.message,
+      messageType: res.data.messageType
+    });
+  } catch (error) {
+    dispatch({
+      type: NOTIFY_USER,
+      message: error.response.data.message,
+      messageType: error.response.data.messageType,
+      errors: error.response.data.errors
+    });
+  }
 };
 
 export const addMarca = marca => async dispatch => {
-  const res = await axios.post("/marca/new", marca);
-  dispatch({
-    type: ADD_MARCA,
-    payload: res.data
-  });
+  try {
+    const res = await axios.post("/marca/new", marca);
+    dispatch({
+      type: ADD_MARCA,
+      payload: res.data.marca
+    });
+    //Success
+    dispatch({
+      type: NOTIFY_USER,
+      errors: null,
+      message: res.data.message,
+      messageType: res.data.messageType
+    });
+  } catch (error) {
+    dispatch({
+      type: NOTIFY_USER,
+      message: error.response.data.message,
+      messageType: error.response.data.messageType,
+      errors: error.response.data.errors
+    });
+  }
 };
 
 export const addVarianteTipo = varianteTipo => async dispatch => {
-  const res = await axios.post("/variante-tipo/new", varianteTipo);
-  dispatch({
-    type: ADD_VARIANTETIPO,
-    payload: res.data
-  });
+  try {
+    const res = await axios.post("/variante-tipo/new", varianteTipo);
+    dispatch({
+      type: ADD_VARIANTETIPO,
+      payload: res.data.varianteTipo
+    });
+    //Success
+    dispatch({
+      type: NOTIFY_USER,
+      errors: null,
+      message: res.data.message,
+      messageType: res.data.messageType
+    });
+  } catch (error) {
+    dispatch({
+      type: NOTIFY_USER,
+      message: error.response.data.message,
+      messageType: error.response.data.messageType,
+      errors: error.response.data.errors
+    });
+  }
 };
 
 export const getMarcas = () => async dispatch => {

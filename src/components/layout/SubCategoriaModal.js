@@ -36,6 +36,7 @@ class SubCategoriaModal extends Component {
   onSubmit = e => {
     e.preventDefault();
     const { nombre, categoria } = this.state;
+    const { addSubCategoria, newProp } = this.props;
     const newSubCategoria = {
       nombre,
       categoria
@@ -43,20 +44,21 @@ class SubCategoriaModal extends Component {
 
     //Añadir subCategoria
 
-    this.props.addSubCategoria(newSubCategoria).then(
-      () => {
-        this.props.newProp("categoria", categoria);
+    addSubCategoria(newSubCategoria).then(() => {
+      if (this.props.notify.messageType === "success") {
+        //Espera a que la subcategoria se añada al DOM y luego la busca para setearla al state.
+        newProp("categoria", categoria);
         setTimeout(() => {
           this.props.newProp("sub_categoria");
         }, 1000);
+
+        this.setState({
+          nombre: "",
+          categoria: ""
+        });
+        this.toggle();
       }
-      //Espera a que la marca se añada al DOM y luego la busca para setearla al state.
-    );
-    this.setState({
-      nombre: "",
-      categoria: ""
     });
-    this.toggle();
   };
 
   render() {
@@ -87,6 +89,7 @@ class SubCategoriaModal extends Component {
                   id="categoriaPerteneciente"
                   onChange={this.onChange}
                   value={this.state.categoria}
+                  className="modalInput"
                 >
                   <option>Elige una categoría...</option>
                   {categorias.map(categoria => (
@@ -99,6 +102,7 @@ class SubCategoriaModal extends Component {
                 <hr className="mt-2 mb-2" />
                 <Label for="subCategoria">SubCategoria</Label>
                 <Input
+                  className="modalInput"
                   type="text"
                   name="nombre"
                   id="subCategoria"

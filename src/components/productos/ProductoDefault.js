@@ -14,7 +14,8 @@ const ProductoDefault = props => {
     marcas,
     subcategorias,
     onChange,
-    newProp
+    newProp,
+    notify
   } = props;
   return (
     <React.Fragment>
@@ -46,7 +47,7 @@ const ProductoDefault = props => {
                   </option>
                 ))}
               </select>
-              <MarcaModal newProp={newProp.bind(this)} />
+              <MarcaModal newProp={newProp.bind(this)} notify={notify} />
             </div>
           </div>
         </div>
@@ -69,7 +70,7 @@ const ProductoDefault = props => {
                   </option>
                 ))}
               </select>
-              <CategoriaModal newProp={newProp.bind(this)} />
+              <CategoriaModal newProp={newProp.bind(this)} notify={notify} />
             </div>
             <div className="form-group col-md-4">
               <select
@@ -106,7 +107,7 @@ const ProductoDefault = props => {
                   : null}
                 }
               </select>
-              <SubCategoriaModal newProp={newProp.bind(this)} />
+              <SubCategoriaModal newProp={newProp.bind(this)} notify={notify} />
             </div>
           </div>
         </div>

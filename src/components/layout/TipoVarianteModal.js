@@ -31,6 +31,7 @@ class TipoVarianteModal extends Component {
 
   onSubmit = e => {
     e.preventDefault();
+    const { addVarianteTipo } = this.props;
 
     const newVarianteTipo = {
       nombre: this.state.nombre
@@ -38,11 +39,14 @@ class TipoVarianteModal extends Component {
 
     //Añadir varianteTipo
 
-    this.props.addVarianteTipo(newVarianteTipo);
-    this.setState({
-      nombre: ""
+    addVarianteTipo(newVarianteTipo).then(() => {
+      if (this.props.notify.messageType === "success") {
+        this.setState({
+          nombre: ""
+        });
+        this.toggle();
+      }
     });
-    this.toggle();
   };
 
   render() {
@@ -64,6 +68,7 @@ class TipoVarianteModal extends Component {
               <FormGroup>
                 <Label for="tipoDeVariante">Tipo de Variante</Label>
                 <Input
+                  className="modalInput"
                   type="text"
                   name="nombre"
                   id="tipoDeVariante"

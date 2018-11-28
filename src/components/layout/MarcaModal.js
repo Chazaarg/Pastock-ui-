@@ -31,6 +31,7 @@ class MarcaModal extends Component {
 
   onSubmit = e => {
     e.preventDefault();
+    const { addMarca, newProp } = this.props;
 
     const newMarca = {
       nombre: this.state.nombre
@@ -38,16 +39,17 @@ class MarcaModal extends Component {
 
     //Añadir marca
 
-    this.props.addMarca(newMarca).then(
-      //Espera a que la marca se añada al DOM y luego la busca para setearla al state.
-      setTimeout(() => {
-        this.props.newProp("marca");
-      }, 1000)
-    );
-    this.setState({
-      nombre: ""
+    addMarca(newMarca).then(() => {
+      if (this.props.notify.messageType === "success") {
+        //Espera a que la marca se añada al DOM y luego la busca para setearla al state.
+        setTimeout(newProp("marca"), 1000);
+
+        this.setState({
+          nombre: ""
+        });
+        this.toggle();
+      }
     });
-    this.toggle();
   };
 
   render() {
@@ -67,6 +69,7 @@ class MarcaModal extends Component {
               <FormGroup>
                 <Label for="marca">Marca</Label>
                 <Input
+                  className="modalInput"
                   type="text"
                   name="nombre"
                   id="marca"

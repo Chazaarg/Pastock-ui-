@@ -32,22 +32,25 @@ class CategoriaModal extends Component {
   onSubmit = e => {
     e.preventDefault();
 
+    const { addCategoria, newProp } = this.props;
+
     const newCategoria = {
       nombre: this.state.nombre
     };
 
     //Añadir categoria
 
-    this.props.addCategoria(newCategoria).then(
-      //Espera a que la marca se añada al DOM y luego la busca para setearla al state.
-      setTimeout(() => {
-        this.props.newProp("categoria");
-      }, 1000)
-    );
-    this.setState({
-      nombre: ""
+    addCategoria(newCategoria).then(() => {
+      if (this.props.notify.messageType === "success") {
+        //Espera a que la marca se añada al DOM y luego la busca para setearla al state.
+        setTimeout(newProp("categoria"), 1000);
+
+        this.setState({
+          nombre: ""
+        });
+        this.toggle();
+      }
     });
-    this.toggle();
   };
 
   render() {
@@ -67,6 +70,7 @@ class CategoriaModal extends Component {
               <FormGroup>
                 <Label for="categoria">Categoria</Label>
                 <Input
+                  className="modalInput"
                   type="text"
                   name="nombre"
                   id="categoria"

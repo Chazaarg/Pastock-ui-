@@ -45,79 +45,81 @@ class Productos extends Component {
               </tr>
             </thead>
             <tbody>
-              {productos.map(producto => (
-                <tr key={producto.id}>
-                  <td>{producto.nombre}</td>
-                  <td>{producto.marca ? producto.marca.nombre : null}</td>
-                  {producto.variantes ? (
-                    <React.Fragment>
+              {productos
+                ? productos.map(producto => (
+                    <tr key={producto.id}>
+                      <td>{producto.nombre}</td>
+                      <td>{producto.marca ? producto.marca.nombre : null}</td>
+                      {producto.variantes ? (
+                        <React.Fragment>
+                          <td>
+                            {producto.variantes.map(variante => (
+                              <table key={variante.id}>
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                      ${parseFloat(variante.precio).toFixed(2)}
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            ))}
+                          </td>
+                          <td>
+                            {producto.variantes.map(variante => (
+                              <table key={variante.id}>
+                                <tbody>
+                                  <tr>
+                                    <td>{variante.cantidad}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            ))}
+                          </td>
+                          <td>
+                            {producto.variantes.map(variante => (
+                              <table key={variante.id}>
+                                <tbody>
+                                  <tr>
+                                    <td>{variante.nombre}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            ))}
+                          </td>
+                        </React.Fragment>
+                      ) : (
+                        <React.Fragment>
+                          <td>${parseFloat(producto.precio).toFixed(2)}</td>
+                          <td>{producto.cantidad}</td>
+                          <td />
+                        </React.Fragment>
+                      )}
                       <td>
-                        {producto.variantes.map(variante => (
-                          <table key={variante.id}>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  ${parseFloat(variante.precio).toFixed(2)}
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        ))}
+                        {producto.categoria ? producto.categoria.nombre : null}{" "}
+                        {producto.sub_categoria
+                          ? "> " + producto.sub_categoria.nombre
+                          : null}
                       </td>
                       <td>
-                        {producto.variantes.map(variante => (
-                          <table key={variante.id}>
-                            <tbody>
-                              <tr>
-                                <td>{variante.cantidad}</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        ))}
+                        <Link
+                          to={`/producto/${producto.id}/show`}
+                          className="btn btn-secondary"
+                        >
+                          Detalles
+                        </Link>
                       </td>
                       <td>
-                        {producto.variantes.map(variante => (
-                          <table key={variante.id}>
-                            <tbody>
-                              <tr>
-                                <td>{variante.nombre}</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        ))}
+                        <Link
+                          to={`/producto/${producto.id}/edit`}
+                          className="btn btn-secondary"
+                        >
+                          Editar
+                        </Link>
                       </td>
-                    </React.Fragment>
-                  ) : (
-                    <React.Fragment>
-                      <td>${parseFloat(producto.precio).toFixed(2)}</td>
-                      <td>{producto.cantidad}</td>
-                      <td />
-                    </React.Fragment>
-                  )}
-                  <td>
-                    {producto.categoria ? producto.categoria.nombre : null}{" "}
-                    {producto.sub_categoria
-                      ? "> " + producto.sub_categoria.nombre
-                      : null}
-                  </td>
-                  <td>
-                    <Link
-                      to={`/producto/${producto.id}/show`}
-                      className="btn btn-secondary"
-                    >
-                      Detalles
-                    </Link>
-                  </td>
-                  <td>
-                    <Link
-                      to={`/producto/${producto.id}/edit`}
-                      className="btn btn-secondary"
-                    >
-                      Editar
-                    </Link>
-                  </td>
-                </tr>
-              ))}
+                    </tr>
+                  ))
+                : null}
             </tbody>
           </table>
         </Loader>

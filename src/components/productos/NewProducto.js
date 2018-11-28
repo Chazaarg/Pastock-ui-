@@ -252,6 +252,7 @@ class NewProducto extends Component {
               subcategorias={subcategorias}
               onChange={this.onChange.bind(this)}
               newProp={this.newProp.bind(this)}
+              notify={notify}
             />
 
             <div id="accordion">
@@ -272,6 +273,7 @@ class NewProducto extends Component {
                 handleRemoveVariante={this.handleRemoveVariante.bind(this)}
                 handleAddVariante={this.handleAddVariante.bind(this)}
                 newProp={this.newProp.bind(this)}
+                notify={notify}
               />
             </div>
             <div className="row-12 mt-5 pt-5 pb-5 mb-5">
