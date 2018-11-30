@@ -27,6 +27,10 @@ const ProductoAlert = props => {
         inputs.forEach(input => {
           if (input.classList.contains("is-invalid")) {
             input.classList.remove("is-invalid");
+            input.classList.remove("is-invalid");
+            input.parentElement.removeChild(
+              input.parentElement.getElementsByClassName("text-danger")[0]
+            );
           }
         });
       }
@@ -34,9 +38,15 @@ const ProductoAlert = props => {
       //Para cualquier tipo de producto verifico errores en los defaultInputs.
       if (errors.productoError.length > 0) {
         defaultInputs.forEach(input => {
+          //Creo el elemento small que contendrá el mensaje de error.
+          const small = document.createElement("small");
+          small.classList.add("float-right", "text-danger");
+
           errors.productoError.forEach(error => {
             if (error.value === input.name) {
               input.classList.add("is-invalid");
+              small.innerHTML = error.message;
+              input.parentElement.append(small);
             }
           });
         });

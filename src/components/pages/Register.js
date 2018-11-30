@@ -48,7 +48,7 @@ class Register extends Component {
                   />
                 ) : null}
                 <h1 className="text-center pb-4 pt-3">Registrarse</h1>
-                <form onSubmit={this.onSubmit}>
+                <form onSubmit={this.onSubmit} noValidate>
                   <div className="form-group">
                     <label htmlFor="username">Usuario</label>
                     <input
