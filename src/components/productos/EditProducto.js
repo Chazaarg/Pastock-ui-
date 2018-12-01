@@ -24,9 +24,9 @@ class EditProducto extends Component {
   state = {
     nombre: "",
     descripcion: "",
-    marca: "",
-    categoria: "",
-    sub_categoria: "",
+    marca: { id: undefined, nombre: undefined },
+    categoria: { id: undefined, nombre: undefined },
+    sub_categoria: { id: undefined, nombre: undefined },
     precio: 0,
     codigo_de_barras: "",
     cantidad: 0,
@@ -69,9 +69,11 @@ class EditProducto extends Component {
     this.setState({
       nombre,
       descripcion,
-      marca: marca ? marca : "",
-      categoria: categoria ? categoria : "",
-      sub_categoria: sub_categoria ? sub_categoria : "",
+      marca: marca ? marca : { id: undefined, nombre: undefined },
+      categoria: categoria ? categoria : { id: undefined, nombre: undefined },
+      sub_categoria: sub_categoria
+        ? sub_categoria
+        : { id: undefined, nombre: undefined },
       precio,
       codigo_de_barras,
       cantidad,
@@ -191,6 +193,16 @@ class EditProducto extends Component {
     });
   };
 
+  handleChange = item => {
+    this.setState({ [item.nombre]: { id: item.value, nombre: item.label } });
+  };
+  handleCategoriaChange = item => {
+    this.setState({
+      [item.nombre]: { id: item.value, nombre: item.label },
+      sub_categoria: { id: undefined, nombre: undefined }
+    });
+  };
+
   varianteOnChange = idx => e => {
     const newVariante = this.state.variantes.map((variante, sidx) => {
       if (idx !== sidx) return variante;
@@ -242,35 +254,39 @@ class EditProducto extends Component {
     this.props.history.push("/producto");
   };
   newProp = (val, categoriaId) => {
-    let select;
-    document.querySelectorAll("select.form-control").forEach(element => {
-      if (element.name === val) {
-        select = element;
-      }
-      return select;
-    });
-
-    let values = [];
-    select.querySelectorAll("option").forEach(element => {
-      values.push(Number(element.value));
-    });
-    values.shift();
-    values.sort((x, y) => {
-      return y - x;
-    });
+    //Cuando se crea una nueva propiedad, se la selecciona en el input, buscando el último valor en el array que corresponda.
     switch (val) {
       case "marca":
-        this.setState({ marca: { id: values[0] } });
+        this.setState({
+          marca: {
+            id: this.props.marcas[0].id,
+            nombre: this.props.marcas[0].nombre
+          }
+        });
         break;
       case "categoria":
         if (categoriaId) {
-          this.setState({ categoria: { id: categoriaId } });
+          this.setState({
+            categoria: { id: categoriaId.id, nombre: categoriaId.label }
+          });
         } else {
-          this.setState({ categoria: { id: values[0] } });
+          this.setState({
+            categoria: {
+              id: this.props.categorias[0].id,
+              nombre: this.props.categorias[0].nombre
+            }
+          });
         }
+
         break;
       case "sub_categoria":
-        this.setState({ sub_categoria: values[0] });
+        this.setState({
+          sub_categoria: {
+            id: this.props.subcategorias[0].id,
+            nombre: this.props.subcategorias[0].nombre
+          }
+        });
+
         break;
       default:
         break;
@@ -340,6 +356,8 @@ class EditProducto extends Component {
               onChange={this.onChange.bind(this)}
               newProp={this.newProp.bind(this)}
               notify={notify}
+              handleChange={this.handleChange.bind(this)}
+              handleCategoriaChange={this.handleCategoriaChange.bind(this)}
             />
 
             <div id="accordion">

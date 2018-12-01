@@ -2,6 +2,7 @@ import React from "react";
 import MarcaModal from "../layout/MarcaModal";
 import CategoriaModal from "../layout/CategoriaModal";
 import SubCategoriaModal from "../layout/SubCategoriaModal";
+import Select from "react-select";
 
 const ProductoDefault = props => {
   const {
@@ -15,8 +16,35 @@ const ProductoDefault = props => {
     subcategorias,
     onChange,
     newProp,
-    notify
+    notify,
+    handleChange,
+    handleCategoriaChange
   } = props;
+  let [optionsMarca] = [
+    marcas.map(marca => ({
+      nombre: "marca",
+      value: marca.id,
+      label: marca.nombre
+    }))
+  ];
+  let [optionsCategoria] = [
+    categorias.map(categoria => ({
+      nombre: "categoria",
+      value: categoria.id,
+      label: categoria.nombre
+    }))
+  ];
+  let [optionsSubcategoria] = [
+    subcategorias
+      .filter(
+        subcategoria => subcategoria.categoria === parseInt(categoria.id, 0)
+      )
+      .map(subcategoria => ({
+        nombre: "sub_categoria",
+        value: subcategoria.id,
+        label: subcategoria.nombre
+      }))
+  ];
   return (
     <React.Fragment>
       <div className="card border-light mt-5">
@@ -34,19 +62,17 @@ const ProductoDefault = props => {
               />
             </div>
             <div className="form-group col-md-4">
-              <select
+              <Select
                 name="marca"
-                value={marca.id ? marca.id : marca}
-                className="form-control productoDefault"
-                onChange={onChange}
-              >
-                <option>Elige una marca...</option>
-                {marcas.map(marca => (
-                  <option key={marca.id} value={marca.id}>
-                    {marca.nombre}
-                  </option>
-                ))}
-              </select>
+                value={
+                  marca.id === undefined
+                    ? null
+                    : { label: marca.nombre, value: marca.id }
+                }
+                onChange={handleChange}
+                options={optionsMarca}
+                placeholder="Seleccione una marca..."
+              />
               <MarcaModal newProp={newProp.bind(this)} notify={notify} />
             </div>
           </div>
@@ -57,60 +83,39 @@ const ProductoDefault = props => {
         <div className="card-body">
           <div className="form-row d-flex justify-content-between mt-3">
             <div className="form-group col-md-6">
-              <select
+              <Select
                 name="categoria"
-                value={categoria.id ? categoria.id : categoria}
-                className="form-control productoDefault"
-                onChange={onChange}
-              >
-                <option>Elige una categoría...</option>
-                {categorias.map(categoria => (
-                  <option key={categoria.id} value={categoria.id}>
-                    {categoria.nombre}
-                  </option>
-                ))}
-              </select>
+                value={
+                  categoria.id === undefined
+                    ? null
+                    : { label: categoria.nombre, value: categoria.id }
+                }
+                onChange={handleCategoriaChange}
+                options={optionsCategoria}
+                placeholder="Seleccione una categoria..."
+              />
               <CategoriaModal newProp={newProp.bind(this)} notify={notify} />
             </div>
             <div className="form-group col-md-4">
-              <select
+              <Select
                 name="sub_categoria"
-                value={sub_categoria.id ? sub_categoria.id : sub_categoria}
-                className="form-control productoDefault"
-                onChange={onChange}
-              >
-                <option>Elige una sub categoría...</option>
-                {categoria
-                  ? categoria.id
-                    ? subcategorias
-                        .filter(
-                          subcategoria =>
-                            subcategoria.categoria === parseInt(categoria.id, 0)
-                        )
-                        .map(subcategoria => (
-                          <option key={subcategoria.id} value={subcategoria.id}>
-                            {subcategoria.nombre}
-                          </option>
-                        ))
-                    : categoria !== ""
-                    ? subcategorias
-                        .filter(
-                          subcategoria =>
-                            subcategoria.categoria === parseInt(categoria, 0)
-                        )
-                        .map(subcategoria => (
-                          <option key={subcategoria.id} value={subcategoria.id}>
-                            {subcategoria.nombre}
-                          </option>
-                        ))
-                    : null
-                  : null}
+                value={
+                  sub_categoria.id === undefined
+                    ? null
+                    : {
+                        label: sub_categoria.nombre,
+                        value: sub_categoria.id
+                      }
                 }
-              </select>
+                onChange={handleChange}
+                options={optionsSubcategoria}
+                placeholder="Seleccione una sub categoria..."
+              />
               <SubCategoriaModal
                 newProp={newProp.bind(this)}
                 notify={notify}
-                categoria={categoria}
+                handleChange={handleChange.bind(this)}
+                optionsCategoria={optionsCategoria}
               />
             </div>
           </div>

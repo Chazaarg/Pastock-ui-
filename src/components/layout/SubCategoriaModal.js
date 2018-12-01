@@ -12,6 +12,7 @@ import {
   Label,
   Input
 } from "reactstrap";
+import Select from "react-select";
 
 class SubCategoriaModal extends Component {
   componentDidMount() {
@@ -20,7 +21,7 @@ class SubCategoriaModal extends Component {
   state = {
     modal: false,
     nombre: "",
-    categoria: ""
+    categoria: { id: undefined, label: undefined }
   };
 
   toggle = () => {
@@ -30,7 +31,11 @@ class SubCategoriaModal extends Component {
   };
 
   onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    if (e.nombre === "categoria") {
+      this.setState({ categoria: { id: e.value, label: e.label } });
+    } else {
+      this.setState({ [e.target.name]: e.target.value });
+    }
   };
 
   onSubmit = e => {
@@ -39,18 +44,17 @@ class SubCategoriaModal extends Component {
     const { addSubCategoria, newProp } = this.props;
     const newSubCategoria = {
       nombre,
-      categoria
+      categoria: categoria.id
     };
 
     //Añadir subCategoria
 
     addSubCategoria(newSubCategoria).then(() => {
       if (this.props.notify.messageType === "success") {
-        //Espera a que la subcategoria se añada al DOM y luego la busca para setearla al state.
+        //Selecciona la categoria de la nueva subcategoria.
         newProp("categoria", categoria);
-        setTimeout(() => {
-          this.props.newProp("sub_categoria");
-        }, 1000);
+        //Selecciona la nueva sub_categoria en el DOM.
+        this.props.newProp("sub_categoria");
 
         this.setState({
           nombre: "",
@@ -62,7 +66,7 @@ class SubCategoriaModal extends Component {
   };
 
   render() {
-    const { categorias } = this.props;
+    const { optionsCategoria } = this.props;
 
     return (
       <div>
@@ -80,30 +84,22 @@ class SubCategoriaModal extends Component {
           <ModalBody>
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
-                <Label for="categoriaPerteneciente">
-                  Categoria de la que es anidada
-                </Label>
-                <Input
-                  type="select"
+                <Label for="categoria">Categoria de la que es anidada</Label>
+
+                <Select
                   name="categoria"
-                  id="categoriaPerteneciente"
-                  onChange={this.onChange}
                   value={
-                    this.state.categoria === ""
-                      ? this.props.categoria.id
-                        ? this.props.categoria.id
-                        : this.props.categoria
-                      : this.state.categoria
+                    this.state.categoria.id === undefined
+                      ? null
+                      : {
+                          label: this.state.categoria.label,
+                          value: this.state.categoria.id
+                        }
                   }
-                  className="modalInput"
-                >
-                  <option>Elige una categoría...</option>
-                  {categorias.map(categoria => (
-                    <option key={categoria.id} value={categoria.id}>
-                      {categoria.nombre}
-                    </option>
-                  ))}
-                </Input>
+                  onChange={this.onChange}
+                  options={optionsCategoria}
+                  placeholder="Seleccione una categoria..."
+                />
 
                 <hr className="mt-2 mb-2" />
                 <Label for="subCategoria">SubCategoria</Label>
