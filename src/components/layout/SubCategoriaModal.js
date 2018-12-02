@@ -21,12 +21,18 @@ class SubCategoriaModal extends Component {
   state = {
     modal: false,
     nombre: "",
-    categoria: { id: undefined, label: undefined }
+    categoria: { id: undefined, label: undefined },
+    selectStyle: "",
+    selectTheme: ""
   };
 
   toggle = () => {
     this.setState({
-      modal: !this.state.modal
+      modal: !this.state.modal,
+      selectStyle: "",
+      selectTheme: "",
+      nombre: "",
+      categoria: ""
     });
   };
 
@@ -50,17 +56,38 @@ class SubCategoriaModal extends Component {
     //Añadir subCategoria
 
     addSubCategoria(newSubCategoria).then(() => {
+      //Si no hay error
       if (this.props.notify.messageType === "success") {
         //Selecciona la categoria de la nueva subcategoria.
         newProp("categoria", categoria);
         //Selecciona la nueva sub_categoria en el DOM.
         this.props.newProp("sub_categoria");
-
-        this.setState({
-          nombre: "",
-          categoria: ""
-        });
         this.toggle();
+      }
+      //Si hay error, verifico. Uso el state para personalizar el Select
+      else {
+        if (this.props.notify.errors) {
+          this.props.notify.errors.forEach(error => {
+            if (error.value === "categoria") {
+              this.setState({
+                selectStyle: {
+                  control: (base, state) => ({
+                    ...base,
+                    borderColor: "red"
+                  })
+                },
+                selectTheme: theme => ({
+                  ...theme,
+                  borderRadius: 0,
+                  colors: {
+                    ...theme.colors,
+                    primary: "red"
+                  }
+                })
+              });
+            }
+          });
+        }
       }
     });
   };
@@ -99,6 +126,10 @@ class SubCategoriaModal extends Component {
                   onChange={this.onChange}
                   options={optionsCategoria}
                   placeholder="Seleccione una categoria..."
+                  styles={this.state.selectStyle}
+                  theme={this.state.selectTheme}
+                  className="modalInput"
+                  id="categoria"
                 />
 
                 <hr className="mt-2 mb-2" />
