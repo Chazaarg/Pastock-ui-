@@ -87,7 +87,7 @@ const ProductoAlert = props => {
     }
     //Si hay errores en los Modal...
     else {
-      if (errors) {
+      if (errors !== null) {
         let modalInputs = document.getElementsByClassName("modalInput");
         modalInputs = Array.from(modalInputs);
         modalInputs.forEach((input, idx) => {

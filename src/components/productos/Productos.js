@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 import { getProductos } from "../../actions/productosActions";
 import { createLoadingSelector } from "../../helpers/CreateLoadingSelector";
 import Loader from "react-loader";
+import BootstrapTable from "react-bootstrap-table-next";
+import ToolkitProvider from "react-bootstrap-table2-toolkit";
 
 class Productos extends Component {
   state = {};
@@ -24,106 +26,156 @@ class Productos extends Component {
   render() {
     const { productos, isFetching } = this.props;
 
-    return (
-      <div className="row">
-        <div className="col-md-12">
-          <h2>Productos</h2>
-        </div>
+    const categoriaFormatter = (cell, row) => {
+      if (row.sub_categoria) {
+        return `${cell} > ${row.sub_categoria.nombre}`;
+      }
 
-        <Loader loaded={isFetching}>
-          <table className="table table-stripped">
-            <thead className="thead-inverse">
-              <tr>
-                <th>Nombre</th>
-                <th>Marca</th>
-                <th>Precio</th>
-                <th>Cantidad</th>
-                <th>Variante</th>
-                <th>Categoria</th>
-                <th />
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {productos
-                ? productos.map(producto => (
-                    <tr key={producto.id}>
-                      <td>{producto.nombre}</td>
-                      <td>{producto.marca ? producto.marca.nombre : null}</td>
-                      {producto.variantes ? (
-                        <React.Fragment>
-                          <td>
-                            {producto.variantes.map(variante => (
-                              <table key={variante.id}>
-                                <tbody>
-                                  <tr>
-                                    <td>
-                                      ${parseFloat(variante.precio).toFixed(2)}
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            ))}
-                          </td>
-                          <td>
-                            {producto.variantes.map(variante => (
-                              <table key={variante.id}>
-                                <tbody>
-                                  <tr>
-                                    <td>{variante.cantidad}</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            ))}
-                          </td>
-                          <td>
-                            {producto.variantes.map(variante => (
-                              <table key={variante.id}>
-                                <tbody>
-                                  <tr>
-                                    <td>{variante.nombre}</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            ))}
-                          </td>
-                        </React.Fragment>
-                      ) : (
-                        <React.Fragment>
-                          <td>${parseFloat(producto.precio).toFixed(2)}</td>
-                          <td>{producto.cantidad}</td>
-                          <td />
-                        </React.Fragment>
-                      )}
-                      <td>
-                        {producto.categoria ? producto.categoria.nombre : null}{" "}
-                        {producto.sub_categoria
-                          ? "> " + producto.sub_categoria.nombre
-                          : null}
-                      </td>
-                      <td>
-                        <Link
-                          to={`/producto/${producto.id}/show`}
-                          className="btn btn-secondary"
-                        >
-                          Detalles
-                        </Link>
-                      </td>
-                      <td>
-                        <Link
-                          to={`/producto/${producto.id}/edit`}
-                          className="btn btn-secondary"
-                        >
-                          Editar
-                        </Link>
-                      </td>
-                    </tr>
-                  ))
-                : null}
-            </tbody>
-          </table>
-        </Loader>
-      </div>
+      return cell;
+    };
+    const varianteFormatter = (cell, row) => {
+      if (!row.variantes) {
+        return null;
+      }
+      const varianteColumns = [
+        {
+          dataField: "nombre",
+          text: "Nombre"
+        }
+      ];
+      return (
+        <BootstrapTable
+          keyField="id"
+          data={row.variantes}
+          columns={varianteColumns}
+          bootstrap4={true}
+          headerClasses="d-none"
+        />
+      );
+    };
+    const productoCantidadFormatter = (cell, row) => {
+      if (!row.variantes) {
+        return row.cantidad;
+      }
+
+      const varianteColumns = [
+        {
+          dataField: "cantidad",
+          text: "Cantidad"
+        }
+      ];
+      return (
+        <BootstrapTable
+          keyField="id"
+          data={row.variantes}
+          columns={varianteColumns}
+          bootstrap4={true}
+          headerClasses="d-none"
+        />
+      );
+    };
+    const productoPrecioFormatter = (cell, row) => {
+      if (!row.variantes) {
+        return "$" + parseFloat(row.precio).toFixed(2);
+      }
+
+      const variantePrecioFormatter = (cell, row) => {
+        return "$" + parseFloat(row.precio).toFixed(2);
+      };
+
+      const varianteColumns = [
+        {
+          dataField: "precio",
+          text: "Precio",
+          formatter: variantePrecioFormatter
+        }
+      ];
+      return (
+        <BootstrapTable
+          keyField="id"
+          data={row.variantes}
+          columns={varianteColumns}
+          bootstrap4={true}
+          headerClasses="d-none"
+        />
+      );
+    };
+
+    const columns = [
+      {
+        dataField: "nombre",
+        text: "Nombre"
+      },
+      {
+        dataField: "marca.nombre",
+        text: "Marca"
+      },
+
+      {
+        dataField: "productoCantidad",
+        text: "Cantidad",
+        isDummyField: true,
+        formatter: productoCantidadFormatter
+      },
+      {
+        dataField: "productoPrecio",
+        text: "Precio",
+        isDummyField: true,
+        formatter: productoPrecioFormatter
+      },
+      {
+        dataField: "variantes",
+        text: "Variante",
+        formatter: varianteFormatter
+      },
+      {
+        dataField: "categoria.nombre",
+        text: "Categoria",
+        formatter: categoriaFormatter
+      },
+      {
+        dataField: "detalles",
+        text: "",
+        isDummyField: true,
+        formatter: (cell, row) => {
+          return (
+            <Link
+              to={`/producto/${row.id}/show`}
+              className="btn btn-secondary ml-auto"
+            >
+              Detalles
+            </Link>
+          );
+        }
+      },
+      {
+        dataField: "editar",
+        text: "",
+        isDummyField: true,
+        formatter: (cell, row) => {
+          return (
+            <Link
+              to={`/producto/${row.id}/edit`}
+              className="btn btn-secondary ml-auto"
+            >
+              Editar
+            </Link>
+          );
+        }
+      }
+    ];
+
+    return (
+      <Loader loaded={isFetching}>
+        <ToolkitProvider
+          keyField="id"
+          data={productos}
+          columns={columns}
+          bootstrap4={true}
+        >
+          {props => <BootstrapTable {...props.baseProps} />}
+        </ToolkitProvider>
+      </Loader>
     );
   }
 }
