@@ -7,6 +7,7 @@ import { createLoadingSelector } from "../../helpers/CreateLoadingSelector";
 import Loader from "react-loader";
 import BootstrapTable from "react-bootstrap-table-next";
 import ToolkitProvider from "react-bootstrap-table2-toolkit";
+import paginationFactory from "react-bootstrap-table2-paginator";
 
 class Productos extends Component {
   state = {};
@@ -104,11 +105,13 @@ class Productos extends Component {
     const columns = [
       {
         dataField: "nombre",
-        text: "Nombre"
+        text: "Nombre",
+        sort: true
       },
       {
         dataField: "marca.nombre",
-        text: "Marca"
+        text: "Marca",
+        sort: true
       },
 
       {
@@ -131,7 +134,8 @@ class Productos extends Component {
       {
         dataField: "categoria.nombre",
         text: "Categoria",
-        formatter: categoriaFormatter
+        formatter: categoriaFormatter,
+        sort: true
       },
       {
         dataField: "detalles",
@@ -165,6 +169,19 @@ class Productos extends Component {
       }
     ];
 
+    const customTotal = (from, to, size) => (
+      <span className="react-bootstrap-table-pagination-total small text-muted">
+        {" "}
+        Mostrando de {from} a {to}. Resultados en total: {size}.
+      </span>
+    );
+
+    const options = {
+      showTotal: true,
+      paginationTotalRenderer: customTotal,
+      sizePerPageList: [10, 20, 30, { text: "Todos", value: productos.length }]
+    };
+
     return (
       <Loader loaded={isFetching}>
         <ToolkitProvider
@@ -173,7 +190,12 @@ class Productos extends Component {
           columns={columns}
           bootstrap4={true}
         >
-          {props => <BootstrapTable {...props.baseProps} />}
+          {props => (
+            <BootstrapTable
+              pagination={paginationFactory(options)}
+              {...props.baseProps}
+            />
+          )}
         </ToolkitProvider>
       </Loader>
     );
