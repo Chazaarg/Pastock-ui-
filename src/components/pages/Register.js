@@ -9,7 +9,8 @@ class Register extends Component {
   state = {
     username: "",
     password: "",
-    email: ""
+    email: "",
+    passwordVerifyIsValid: true
   };
 
   componentWillUnmount() {
@@ -23,13 +24,48 @@ class Register extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const { username, password, email } = this.state;
+    const { username, password, email, passwordVerifyIsValid } = this.state;
     const { registerUser } = this.props;
 
-    registerUser({ username, password, email });
+    registerUser({ username, password, email, passwordVerifyIsValid });
   };
 
-  onChange = e => this.setState({ [e.target.name]: e.target.value });
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+
+    //Verificar contraseña.
+    if (e.target.name === "password") {
+      this.verifyPassword();
+    }
+  };
+
+  verifyPassword = () => {
+    const passRegister = document.getElementById("passwordRegister");
+    const passRepeat = document.getElementById("passwordRepeat");
+
+    //Creo el elemento small que contendrá el mensaje de error.
+    const small = document.createElement("small");
+    small.classList.add("float-right", "text-danger");
+    small.innerHTML = "La contraseña no coincide.";
+
+    //Primero me deshago de errores anteriores.
+    if (passRepeat.classList.contains("is-invalid")) {
+      passRepeat.classList.remove("is-invalid");
+      passRepeat.parentElement.removeChild(
+        passRepeat.parentElement.getElementsByClassName("text-danger")[0]
+      );
+    }
+
+    if (passRepeat.value === passRegister.value) {
+      passRepeat.classList.add("is-valid");
+      this.setState({ passwordVerifyIsValid: true });
+    } else {
+      passRepeat.classList.add("is-invalid");
+      passRepeat.parentElement.prepend(small);
+      this.setState({ passwordVerifyIsValid: false });
+    }
+  };
+
   render() {
     const { message, messageType, errors } = this.props.notify;
 
@@ -54,7 +90,7 @@ class Register extends Component {
                     <input
                       type="text"
                       name="username"
-                      className="form-control"
+                      className="form-control register"
                       value={this.state.username}
                       onChange={this.onChange}
                     />
@@ -62,11 +98,22 @@ class Register extends Component {
                   <div className="form-group">
                     <label htmlFor="password">Contraseña</label>
                     <input
+                      id="passwordRegister"
                       type="password"
                       name="password"
-                      className="form-control"
+                      className="form-control register"
                       value={this.state.password}
                       onChange={this.onChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="passwordRepeat">Repetir Contraseña</label>
+                    <input
+                      id="passwordRepeat"
+                      type="password"
+                      name="passwordRepeat"
+                      className="form-control"
+                      onChange={this.verifyPassword}
                     />
                   </div>
                   <div className="form-group">
@@ -74,7 +121,7 @@ class Register extends Component {
                     <input
                       type="email"
                       name="email"
-                      className="form-control"
+                      className="form-control register"
                       value={this.state.email}
                       onChange={this.onChange}
                     />

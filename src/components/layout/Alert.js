@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 const Alert = props => {
   const { message, messageType, errors } = props;
   //Agarro todos los inputs que haya en el formulario que tengan la clase form-control.
-  const inputs = document.getElementsByClassName("form-control");
+  const inputs = document.getElementsByClassName("register");
   //TODO: puedo mejorar el código de abajo.
   //Si recibo un array con los errores específicos para cada input.
   if (errors[0]) {

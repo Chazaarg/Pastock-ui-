@@ -27,7 +27,6 @@ const ProductoAlert = props => {
         inputs.forEach(input => {
           if (input.classList.contains("is-invalid")) {
             input.classList.remove("is-invalid");
-            input.classList.remove("is-invalid");
             input.parentElement.removeChild(
               input.parentElement.getElementsByClassName("text-danger")[0]
             );

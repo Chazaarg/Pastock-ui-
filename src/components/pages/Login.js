@@ -48,7 +48,7 @@ class Login extends Component {
                     <input
                       type="text"
                       name="username"
-                      className="form-control"
+                      className="form-control register"
                       value={this.state.username}
                       onChange={this.onChange}
                     />
@@ -58,7 +58,7 @@ class Login extends Component {
                     <input
                       type="password"
                       name="password"
-                      className="form-control"
+                      className="form-control register"
                       value={this.state.password}
                       onChange={this.onChange}
                     />
