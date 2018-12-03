@@ -74,9 +74,9 @@ class NewProducto extends Component {
       nuevoProducto = {
         nombre,
         descripcion,
-        marca,
-        categoria,
-        sub_categoria,
+        marca: marca.id ? marca.id : null,
+        categoria: categoria.id ? categoria.id : null,
+        sub_categoria: sub_categoria.id ? sub_categoria.id : null,
         precio_compra,
         precio_real,
         variantes: variantes
@@ -89,9 +89,9 @@ class NewProducto extends Component {
       nuevoProducto = {
         nombre,
         descripcion,
-        marca,
-        categoria,
-        sub_categoria,
+        marca: marca.id ? marca.id : null,
+        categoria: categoria.id ? categoria.id : null,
+        sub_categoria: sub_categoria.id ? sub_categoria.id : null,
         precio: precio,
         codigo_de_barras: codigo_de_barras,
         cantidad: cantidad,
@@ -121,6 +121,7 @@ class NewProducto extends Component {
       setTimeout(() => {
         this.props.notifyUser(null, null, null);
       }, 10000);
+      window.scrollTo(0, 0);
     });
   };
 

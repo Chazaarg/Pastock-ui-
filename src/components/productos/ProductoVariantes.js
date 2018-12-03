@@ -137,14 +137,15 @@ const ProductoVariantes = props => {
                 </div>
               ))
             : null}
-
-          <button
-            type="button"
-            onClick={handleAddVariante}
-            className="btn btn-success m-3 float-right"
-          >
-            Añadir variante
-          </button>
+          <div className="row-12 d-flex justify-content-center">
+            <button
+              type="button"
+              onClick={handleAddVariante}
+              className="btn btn-primary"
+            >
+              Añadir variante
+            </button>
+          </div>
         </div>
       </div>
     </div>
