@@ -125,15 +125,38 @@ class NewProducto extends Component {
     });
   };
 
-  handleChange = item => {
-    this.setState({ [item.nombre]: { id: item.value, nombre: item.label } });
+  handleChange = (item, nombre) => {
+    this.setState({ [nombre]: { id: item.value, nombre: item.label } });
   };
+
+  //Hice un controlador para cada uno de los selects porque el atributo puede ser directamente NULL y no hay forma de diferenciarlos.
+  handleMarcaChange = item => {
+    this.setState({
+      marca: {
+        id: item ? item.value : undefined,
+        nombre: item ? item.label : undefined
+      }
+    });
+  };
+
   handleCategoriaChange = item => {
     this.setState({
-      [item.nombre]: { id: item.value, nombre: item.label },
+      categoria: {
+        id: item ? item.value : undefined,
+        nombre: item ? item.label : undefined
+      },
       sub_categoria: { id: undefined, nombre: undefined }
     });
   };
+  handleSubcategoriaChange = item => {
+    this.setState({
+      sub_categoria: {
+        id: item ? item.value : undefined,
+        nombre: item ? item.label : undefined
+      }
+    });
+  };
+
   varianteOnChange = idx => e => {
     const newVariante = this.state.variantes.map((variante, sidx) => {
       if (idx !== sidx) return variante;
@@ -269,6 +292,10 @@ class NewProducto extends Component {
               notify={notify}
               handleChange={this.handleChange.bind(this)}
               handleCategoriaChange={this.handleCategoriaChange.bind(this)}
+              handleMarcaChange={this.handleMarcaChange.bind(this)}
+              handleSubcategoriaChange={this.handleSubcategoriaChange.bind(
+                this
+              )}
             />
 
             <div id="accordion">

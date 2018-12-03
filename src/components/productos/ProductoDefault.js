@@ -18,7 +18,9 @@ const ProductoDefault = props => {
     newProp,
     notify,
     handleChange,
-    handleCategoriaChange
+    handleMarcaChange,
+    handleCategoriaChange,
+    handleSubcategoriaChange
   } = props;
   let [optionsMarca] = [
     marcas.map(marca => ({
@@ -63,13 +65,14 @@ const ProductoDefault = props => {
             </div>
             <div className="form-group col-md-4">
               <Select
+                isClearable
                 name="marca"
                 value={
                   marca.id === undefined
                     ? null
                     : { label: marca.nombre, value: marca.id }
                 }
-                onChange={handleChange}
+                onChange={handleMarcaChange}
                 options={optionsMarca}
                 placeholder="Seleccione una marca..."
               />
@@ -84,6 +87,7 @@ const ProductoDefault = props => {
           <div className="form-row d-flex justify-content-between mt-3">
             <div className="form-group col-md-6">
               <Select
+                isClearable
                 name="categoria"
                 value={
                   categoria.id === undefined
@@ -98,6 +102,7 @@ const ProductoDefault = props => {
             </div>
             <div className="form-group col-md-4">
               <Select
+                isClearable
                 name="sub_categoria"
                 value={
                   sub_categoria.id === undefined
@@ -107,7 +112,7 @@ const ProductoDefault = props => {
                         value: sub_categoria.id
                       }
                 }
-                onChange={handleChange}
+                onChange={handleSubcategoriaChange}
                 options={optionsSubcategoria}
                 placeholder="Seleccione una sub categoria..."
               />
