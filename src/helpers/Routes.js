@@ -15,6 +15,8 @@ import NewProducto from "../components/productos/NewProducto";
 import EditProducto from "../components/productos/EditProducto";
 import NotFound from "../components/pages/NotFound";
 import Login from "../components/pages/Login";
+import OrganizarMarcas from "../components/organizar/OrganizarMarcas";
+import OrganizarCategorias from "../components/organizar/OrganizarCategorias";
 import Register from "../components/pages/Register";
 import { getUsuario } from "../actions/usuarioActions";
 
@@ -90,6 +92,12 @@ class Routes extends Component {
                 exact
                 path="/producto/new"
                 component={NewProducto}
+              />
+              <PrivateRoute exact path="/marca" component={OrganizarMarcas} />
+              <PrivateRoute
+                exact
+                path="/categoria"
+                component={OrganizarCategorias}
               />
               <AnonymousRoute exact path="/login" component={Login} />
               <AnonymousRoute exact path="/register" component={Register} />
