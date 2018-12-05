@@ -32,6 +32,16 @@ class AppNavbar extends Component {
                       Stock
                     </Link>
                   </li>
+                  <li className="nav-item">
+                    <Link to="/marca" className="nav-link">
+                      Organizar Marcas
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/categoria" className="nav-link">
+                      Organizar Categorias
+                    </Link>
+                  </li>
                 </ul>
 
                 <ul className="navbar-nav mr-0">

@@ -5,7 +5,7 @@ import ToolkitProvider from "react-bootstrap-table2-toolkit";
 import Subcategorias from "./Subcategorias";
 
 const Categorias = props => {
-  const { categorias, toggleNav, openNav } = props;
+  const { categorias, subcategorias, closeNav, openNav } = props;
 
   const subcategoriaFormatter = (cell, row) => {
     return (
@@ -31,7 +31,7 @@ const Categorias = props => {
   ];
   return (
     <React.Fragment>
-      <div className="col-6 float-left">
+      <div className="col-6 float-left pr-0">
         <ToolkitProvider
           keyField="id"
           data={categorias}
@@ -42,15 +42,17 @@ const Categorias = props => {
         </ToolkitProvider>
       </div>
       <div
-        className="col-6 float-right"
+        className="col-6 float-right pl-0"
         id="sideNavContainer"
         style={{
           height: "40%"
-        }}
+        }} //Esta altura quizás la termine sacando y sea automática.
       >
-        {/* Subcategorias */}
-
-        <Subcategorias toggleNav={toggleNav} />
+        <div className="col p-0" style={{ height: "100%", display: "none" }}>
+          {/* Subcategorias */}
+          <div className="p-0 col-2 float-left" style={{ height: "100%" }} />
+          <Subcategorias closeNav={closeNav} subcategorias={subcategorias} />
+        </div>
       </div>
     </React.Fragment>
   );

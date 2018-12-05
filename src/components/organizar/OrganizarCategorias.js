@@ -6,6 +6,7 @@ import { createLoadingSelector } from "../../helpers/CreateLoadingSelector";
 import Loader from "react-loader";
 
 import { getCategorias } from "../../actions/productosActions";
+import { getSubcategorias } from "../../actions/productosActions";
 import Categorias from "./Categorias";
 
 class OrganizarCategorias extends Component {
@@ -14,12 +15,13 @@ class OrganizarCategorias extends Component {
   };
   componentDidMount() {
     this.props.getCategorias();
+    this.props.getSubcategorias();
   }
   static getDerivedStateFromProps(props, state) {
     const { loading } = props;
     //Cuando se sale, le asigno false a FETCH_PRODUCTOS, para que vuelva a cargar la página al volver.
     if (loading.FETCH_CATEGORIAS) {
-      return (loading["FETCH_CATEGORIAS"] = false);
+      return (loading["FETCH_SUBCATEGORIAS"] = false);
     }
     return state;
   }
@@ -54,12 +56,23 @@ class OrganizarCategorias extends Component {
 
     //Se setea la distancia del contenedor dependiendo si:
     //la posición del botón + la altura del contenedor <= Altura de la tabla.
-    if (pageYTop + sideNavContainer.offsetHeight <= tablaHeight) {
+    //O la altura del contenedor >= a la distancia del boton con el header
+    if (
+      pageYTop + sideNavContainer.offsetHeight <= tablaHeight ||
+      sideNavContainer.offsetHeight >= pageYTop
+    ) {
       sideNavContainer.style.bottom = "";
       sideNavContainer.style.top = pageYTop + "px";
+      sideNavContainer.children[0].children[0].style.borderBottom = "";
+      sideNavContainer.children[0].children[0].style.borderTop =
+        "1px solid #dee2e6";
     } else {
       sideNavContainer.style.top = "";
       sideNavContainer.style.bottom = pageYBottom + "px";
+
+      sideNavContainer.children[0].children[0].style.borderTop = "";
+      sideNavContainer.children[0].children[0].style.borderBottom =
+        "1px solid #dee2e6";
     }
 
     this.setState({
@@ -68,14 +81,15 @@ class OrganizarCategorias extends Component {
   };
   render() {
     const { sideNav } = this.state;
-    const { categorias } = this.props;
-
-    const sideNavElement = document.getElementById("sideNav");
-    if (sideNavElement) {
+    const { categorias, subcategorias } = this.props;
+    const sideNavContainerChildren = document.querySelector(
+      "#sideNavContainer div"
+    );
+    if (sideNavContainerChildren) {
       if (sideNav) {
-        sideNavElement.style.width = "100%";
+        sideNavContainerChildren.style.display = "block";
       } else {
-        sideNavElement.style.width = "0";
+        sideNavContainerChildren.style.display = "none";
       }
     }
 
@@ -94,7 +108,9 @@ class OrganizarCategorias extends Component {
 
             <Categorias
               categorias={categorias}
+              subcategorias={subcategorias}
               openNav={this.openNav.bind(this)}
+              closeNav={this.closeNav.bind(this)}
             />
           </Loader>
         </div>
@@ -102,20 +118,22 @@ class OrganizarCategorias extends Component {
     );
   }
 }
-const loadingSelector = createLoadingSelector(["FETCH_CATEGORIAS"]);
+const loadingSelector = createLoadingSelector(["FETCH_SUBCATEGORIAS"]);
 
 OrganizarCategorias.propTypes = {
   getCategorias: PropTypes.func.isRequired,
+  getSubcategorias: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
   categorias: state.producto.categorias,
+  subcategorias: state.producto.subcategorias,
   isFetching: loadingSelector(state),
   loading: state.loading
 });
 
 export default connect(
   mapStateToProps,
-  { getCategorias }
+  { getCategorias, getSubcategorias }
 )(OrganizarCategorias);
