@@ -4,6 +4,9 @@ import PropTypes from "prop-types";
 
 const ProductoAlert = props => {
   const { message, messageType, errors } = props;
+  //Todos los inputs.
+  let inputs = document.getElementsByClassName("is-invalid");
+  inputs = Array.from(inputs);
 
   //Si recibo un array con los errores específicos para cada input...
   if (errors) {
@@ -18,18 +21,18 @@ const ProductoAlert = props => {
       //Agarro los inputs de ProductoVariantes.
       let varInputs = document.getElementsByClassName("varInputs");
       varInputs = Array.from(varInputs);
-      //Todos los inputs.
-      let inputs = document.getElementsByClassName("is-invalid");
-      inputs = Array.from(inputs);
 
       //Antes que nada, me aseguro de eliminar errores anteriores.
       if (inputs) {
         inputs.forEach(input => {
           if (input.classList.contains("is-invalid")) {
             input.classList.remove("is-invalid");
-            input.parentElement.removeChild(
-              input.parentElement.getElementsByClassName("text-danger")[0]
-            );
+            const errMesage = input.parentElement.getElementsByClassName(
+              "text-danger"
+            )[0];
+            if (errMesage) {
+              input.parentElement.removeChild(errMesage);
+            }
           }
         });
       }
@@ -109,6 +112,21 @@ const ProductoAlert = props => {
           });
         });
       }
+    }
+  } else {
+    //Si no hay errores, me aseguro de sacarle el mensaje de error a defaultInput. Esto es para newProducto.
+    if (inputs) {
+      inputs.forEach(input => {
+        if (input.classList.contains("is-invalid")) {
+          input.classList.remove("is-invalid");
+          const errMesage = input.parentElement.getElementsByClassName(
+            "text-danger"
+          )[0];
+          if (errMesage) {
+            input.parentElement.removeChild(errMesage);
+          }
+        }
+      });
     }
   }
   if (errors) {

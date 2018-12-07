@@ -189,8 +189,8 @@ class EditProducto extends Component {
           varianteTipoId,
           variantes
         });
+        window.scrollTo(0, 0);
       }
-      this.window.scrollTo(0, 0);
     });
   };
 
@@ -375,7 +375,6 @@ class EditProducto extends Component {
               onChange={this.onChange.bind(this)}
               newProp={this.newProp.bind(this)}
               notify={notify}
-              handleChange={this.handleChange.bind(this)}
               handleCategoriaChange={this.handleCategoriaChange.bind(this)}
               handleMarcaChange={this.handleMarcaChange.bind(this)}
               handleSubcategoriaChange={this.handleSubcategoriaChange.bind(

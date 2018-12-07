@@ -8,8 +8,12 @@ import Loader from "react-loader";
 import CategoriaModal from "../layout/CategoriaModal";
 import { notifyUser } from "../../actions/notifyActions";
 
-import { getCategorias } from "../../actions/productosActions";
-import { getSubcategorias } from "../../actions/productosActions";
+import {
+  getCategorias,
+  deleteCategoria,
+  getSubcategorias,
+  deleteSubcategoria
+} from "../../actions/productosActions";
 import Categorias from "./Categorias";
 import ProductoAlert from "../layout/ProductoAlert";
 
@@ -46,34 +50,28 @@ class OrganizarCategorias extends Component {
     });
   };
   openNav = e => {
-    //Primero se calculan distancias entre el botón "administrar subcategorias" con el pie y header de la tabla.
+    //Primero se calculan distancias entre la celda con el botón "administrar subcategorias" con el pie y header de la tabla.
     //Esto es para mostrar a un costado del botón las subcategorias.
 
     //El contenedor del sideNav.
     const sideNavContainer = document.getElementById("sideNavContainer");
 
-    //El boton.
-    const btn = e.target.parentElement;
+    //La celda
+    const cell =
+      e.target.parentElement.parentElement.parentElement.parentElement;
 
-    //Y = Distancia entre el botón y el header.
-    const pageYTop = btn.offsetTop;
+    //Y = Distancia entre la celda y el header.
+    const pageYTop = cell.offsetTop;
 
-    //Y = Distancia entre el botón y el pie:
-
-    const elYmaselH = pageYTop + btn.offsetHeight; //Y = Distancia del botón al header más la altura del botón.
-
-    const pageYBottom = -elYmaselH + sideNavContainer.offsetHeight; //Finalmente, Y = distancia del botón al pie de la tabla.
-
-    //Altura de la tabla.
-    const tablaHeight =
-      btn.parentElement.parentElement.parentElement.offsetHeight;
+    //Y = Distancia entre la celda y el pie:
 
     //Se setea la distancia del contenedor dependiendo si:
-    //la posición del botón + la altura del contenedor <= Altura de la tabla.
-    //O la altura del contenedor >= a la distancia del boton con el header
+    //la posición de la celda + la altura del contenedor <= Altura de la tabla.
+    //O la altura del contenedor >= a la distancia de la celda con el header
     if (
-      pageYTop + sideNavContainer.offsetHeight <= tablaHeight ||
-      sideNavContainer.offsetHeight >= pageYTop
+      true
+      /*pageYTop + sideNavContainer.offsetHeight <= tablaHeight ||
+      sideNavContainer.offsetHeight >= pageYTop*/
     ) {
       sideNavContainer.style.bottom = "";
       sideNavContainer.style.top = pageYTop + "px";
@@ -81,12 +79,19 @@ class OrganizarCategorias extends Component {
       sideNavContainer.children[0].children[0].style.borderTop =
         "1px solid #dee2e6";
     } else {
+      //TODO: esto está buguea3
+      /*const elYmaselH = pageYTop + cell.offsetHeight; //Y = Distancia de la celda al header más la altura de la celda.
+      const pageYBottom = -elYmaselH + sideNavContainer.offsetHeight; //Finalmente, Y = distancia de la celda al pie de la tabla.
+
+    //Altura de la tabla.
+      const tablaHeight =
+      cell.parentElement.parentElement.parentElement.offsetHeight;
       sideNavContainer.style.top = "";
       sideNavContainer.style.bottom = pageYBottom + "px";
 
       sideNavContainer.children[0].children[0].style.borderTop = "";
       sideNavContainer.children[0].children[0].style.borderBottom =
-        "1px solid #dee2e6";
+        "1px solid #dee2e6";*/
     }
 
     this.setState({
@@ -107,7 +112,13 @@ class OrganizarCategorias extends Component {
 
   render() {
     const { sideNav, categoria } = this.state;
-    const { categorias, subcategorias, notify } = this.props;
+    const {
+      categorias,
+      subcategorias,
+      notify,
+      deleteSubcategoria,
+      deleteCategoria
+    } = this.props;
     const sideNavContainerChildren = document.querySelector(
       "#sideNavContainer div"
     );
@@ -161,6 +172,9 @@ class OrganizarCategorias extends Component {
               categoria={categoria}
               newProp={this.newProp.bind(this)}
               notify={notify}
+              deleteSubcategoria={deleteSubcategoria.bind(this)}
+              deleteCategoria={deleteCategoria.bind(this)}
+              notifyUser={this.props.notifyUser.bind(this)}
             />
           </Loader>
         </div>
@@ -175,7 +189,9 @@ const loadingSelector = createLoadingSelector([
 
 OrganizarCategorias.propTypes = {
   getCategorias: PropTypes.func.isRequired,
+  deleteCategoria: PropTypes.func.isRequired,
   getSubcategorias: PropTypes.func.isRequired,
+  deleteSubcategoria: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
   notifyUser: PropTypes.func.isRequired,
   notify: PropTypes.object.isRequired
@@ -191,5 +207,11 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getCategorias, notifyUser, getSubcategorias }
+  {
+    getCategorias,
+    notifyUser,
+    getSubcategorias,
+    deleteSubcategoria,
+    deleteCategoria
+  }
 )(OrganizarCategorias);

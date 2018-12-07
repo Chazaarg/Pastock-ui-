@@ -5,7 +5,14 @@ import ToolkitProvider from "react-bootstrap-table2-toolkit";
 import SubCategoriaModal from "../layout/SubCategoriaModal";
 
 const Subcategorias = props => {
-  const { closeNav, categoria, categorias, newProp, notify } = props;
+  const {
+    closeNav,
+    categoria,
+    categorias,
+    newProp,
+    notify,
+    deleteSubcategoria
+  } = props;
 
   let { subcategorias } = props;
 
@@ -38,6 +45,20 @@ const Subcategorias = props => {
       tableHead.appendChild(btnClose);
     }
   });
+  const nombreFormatter = (cell, row) => {
+    return (
+      <div className="row">
+        <div
+          style={{ fontSize: "1.3rem" }}
+          className="col-2 text-danger"
+          onClick={() => deleteSubcategoria(row.id)}
+        >
+          &times;
+        </div>
+        <div className="col-10 m-auto ">{cell}</div>
+      </div>
+    );
+  };
 
   const columns = [
     {
@@ -45,7 +66,8 @@ const Subcategorias = props => {
       text: categoria.nombre
         ? "Subcategorias - " + categoria.nombre + "  "
         : "Subcategorias - ",
-      sort: true
+      sort: true,
+      formatter: nombreFormatter
     }
   ];
 

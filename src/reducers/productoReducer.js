@@ -6,8 +6,10 @@ import {
   ADD_MARCA,
   FETCH_CATEGORIAS,
   ADD_CATEGORIA,
+  DELETE_CATEGORIA,
   FETCH_SUBCATEGORIAS,
   ADD_SUBCATEGORIA,
+  DELETE_SUBCATEGORIA,
   FETCH_VARIANTETIPOS,
   UPDATE_PRODUCTO,
   DELETE_PRODUCTO,
@@ -82,6 +84,14 @@ export default function(state = initState, action) {
         ...state,
         categorias: action.payload
       };
+
+    case DELETE_CATEGORIA:
+      return {
+        ...state,
+        categorias: state.categorias.filter(
+          categoria => categoria.id !== action.payload
+        )
+      };
     case FETCH_SUBCATEGORIAS:
       return {
         ...state,
@@ -91,6 +101,13 @@ export default function(state = initState, action) {
       return {
         ...state,
         subcategorias: [action.payload, ...state.subcategorias]
+      };
+    case DELETE_SUBCATEGORIA:
+      return {
+        ...state,
+        subcategorias: state.subcategorias.filter(
+          subcategoria => subcategoria.id !== action.payload
+        )
       };
     case FETCH_VARIANTETIPOS:
       return {

@@ -11,20 +11,49 @@ const Categorias = props => {
     subcategorias,
     subcategoriasClick,
     closeNav,
-    openNav
+    openNav,
+    deleteSubcategoria,
+    deleteCategoria,
+    notifyUser,
+    newProp,
+    notify
   } = props;
 
-  const subcategoriaFormatter = (cell, row) => {
+  const nombreFormatter = (cell, row) => {
     return (
-      <div
-        className="btn btn-warning"
-        onClick={e => {
-          openNav(e);
-          subcategoriasClick(row);
-        }}
-      >
-        {" "}
-        Subcategorias
+      <div className="row">
+        <div
+          style={{ fontSize: "1.3rem" }}
+          className="col-1 text-danger"
+          onClick={() =>
+            deleteCategoria(row.id).then(
+              notifyUser(`Categoria ${cell} eliminada.`, "warning", null)
+            )
+          }
+        >
+          &times;
+        </div>
+        <div className="col-8 m-auto " style={{ wordWrap: "break-word" }}>
+          {cell}
+        </div>
+        <div className="float-right col-3">
+          <span
+            style={{
+              width: "6rem",
+              height: "2rem",
+              fontSize: "0.6rem",
+              textAlign: "center",
+              fontWeight: "bold"
+            }}
+            className="btn btn-warning m-auto"
+            onClick={e => {
+              openNav(e);
+              subcategoriasClick(row);
+            }}
+          >
+            SUBCATEGORIAS
+          </span>
+        </div>
       </div>
     );
   };
@@ -33,15 +62,12 @@ const Categorias = props => {
     {
       dataField: "nombre",
       text: "Nombre",
-      sort: true
-    },
-    {
-      dataField: "subcategoria",
-      text: "",
-      isDummyField: true,
-      formatter: subcategoriaFormatter
+      sort: true,
+      formatter: nombreFormatter,
+      headerAlign: (column, colIndex) => "center"
     }
   ];
+
   return (
     <React.Fragment>
       <div className="col-6 float-left pr-0">
@@ -63,6 +89,10 @@ const Categorias = props => {
             subcategorias={subcategorias}
             categorias={categorias}
             categoria={categoria}
+            deleteSubcategoria={deleteSubcategoria}
+            notifyUser={notifyUser}
+            newProp={newProp}
+            notify={notify}
           />
         </div>
       </div>

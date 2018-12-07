@@ -8,11 +8,13 @@ import {
   ADD_CATEGORIA,
   FETCH_SUBCATEGORIAS,
   ADD_SUBCATEGORIA,
+  DELETE_SUBCATEGORIA,
   FETCH_VARIANTETIPOS,
   UPDATE_PRODUCTO,
   DELETE_PRODUCTO,
   ADD_VARIANTETIPO,
-  NOTIFY_USER
+  NOTIFY_USER,
+  DELETE_CATEGORIA
 } from "./types";
 import axios from "axios";
 
@@ -112,12 +114,28 @@ export const addCategoria = categoria => async dispatch => {
     });
   }
 };
+export const deleteCategoria = id => async dispatch => {
+  await axios.delete(`/categoria/${id}`);
+  dispatch({
+    type: DELETE_CATEGORIA,
+    payload: id
+  });
+};
+
 export const getSubcategorias = () => async dispatch => {
   const res = await axios.get("/subcategoria");
 
   dispatch({
     type: FETCH_SUBCATEGORIAS,
     payload: res.data
+  });
+};
+
+export const deleteSubcategoria = id => async dispatch => {
+  await axios.delete(`/subcategoria/${id}`);
+  dispatch({
+    type: DELETE_SUBCATEGORIA,
+    payload: id
   });
 };
 
