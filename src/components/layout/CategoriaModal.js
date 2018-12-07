@@ -58,7 +58,7 @@ class CategoriaModal extends Component {
       <div>
         <button
           type="button"
-          className="text-secondary btn btn-link"
+          className={this.props.btnClass}
           onClick={this.toggle}
         >
           <small>Añadir nueva categoria</small>

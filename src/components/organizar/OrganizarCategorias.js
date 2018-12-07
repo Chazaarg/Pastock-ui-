@@ -5,23 +5,37 @@ import PropTypes from "prop-types";
 import { createLoadingSelector } from "../../helpers/CreateLoadingSelector";
 import Loader from "react-loader";
 
+import CategoriaModal from "../layout/CategoriaModal";
+import { notifyUser } from "../../actions/notifyActions";
+
 import { getCategorias } from "../../actions/productosActions";
 import { getSubcategorias } from "../../actions/productosActions";
 import Categorias from "./Categorias";
+import ProductoAlert from "../layout/ProductoAlert";
 
 class OrganizarCategorias extends Component {
   state = {
-    sideNav: false
+    sideNav: false,
+    categoria: { id: undefined, nombre: undefined }
   };
   componentDidMount() {
     this.props.getCategorias();
     this.props.getSubcategorias();
   }
+
+  componentWillUnmount() {
+    //Esto hace un clear a notify cada vez que cambie de ruta.
+    const { message } = this.props.notify;
+    const { notifyUser } = this.props;
+
+    message && notifyUser(null, null, null);
+  }
+
   static getDerivedStateFromProps(props, state) {
     const { loading } = props;
     //Cuando se sale, le asigno false a FETCH_PRODUCTOS, para que vuelva a cargar la página al volver.
     if (loading.FETCH_CATEGORIAS) {
-      return (loading["FETCH_SUBCATEGORIAS"] = false);
+      return (loading["NOTIFY_USER"] = false);
     }
     return state;
   }
@@ -79,9 +93,21 @@ class OrganizarCategorias extends Component {
       sideNav: true //Se muestra el sideNav
     });
   };
+
+  subcategoriasClick = cell => {
+    this.setState({ categoria: { id: cell.id, nombre: cell.nombre } });
+  };
+
+  newProp = () => {
+    //Luego de unos segundos borro el mensaje
+    setTimeout(() => {
+      this.props.notifyUser(null, null, null);
+    }, 10000);
+  };
+
   render() {
-    const { sideNav } = this.state;
-    const { categorias, subcategorias } = this.props;
+    const { sideNav, categoria } = this.state;
+    const { categorias, subcategorias, notify } = this.props;
     const sideNavContainerChildren = document.querySelector(
       "#sideNavContainer div"
     );
@@ -96,9 +122,29 @@ class OrganizarCategorias extends Component {
     return (
       <React.Fragment>
         {/* Heading */}
-        <div className="row pt-4 pb-2 altura">
-          <div className="col-md-10">
+        <div className="row pt-4 pb-2 d-flex justify-content-start">
+          <div className="col-md-6 pr-0">
             <h2>Organizar Categorias</h2>
+          </div>
+
+          {notify.message ? (
+            <div className="col-md-4">
+              <ProductoAlert
+                message={notify.message}
+                messageType={notify.messageType}
+                errors={notify.errors}
+              />
+            </div>
+          ) : null}
+        </div>
+
+        <div className="row d-flex justify-content-end">
+          <div className="col-md-6">
+            <CategoriaModal
+              newProp={this.newProp.bind(this)}
+              notify={notify}
+              btnClass="btn btn-success text-dark"
+            />
           </div>
         </div>
 
@@ -111,6 +157,10 @@ class OrganizarCategorias extends Component {
               subcategorias={subcategorias}
               openNav={this.openNav.bind(this)}
               closeNav={this.closeNav.bind(this)}
+              subcategoriasClick={this.subcategoriasClick.bind(this)}
+              categoria={categoria}
+              newProp={this.newProp.bind(this)}
+              notify={notify}
             />
           </Loader>
         </div>
@@ -118,15 +168,21 @@ class OrganizarCategorias extends Component {
     );
   }
 }
-const loadingSelector = createLoadingSelector(["FETCH_SUBCATEGORIAS"]);
+const loadingSelector = createLoadingSelector([
+  "FETCH_SUBCATEGORIAS",
+  "NOTIFY_USER"
+]);
 
 OrganizarCategorias.propTypes = {
   getCategorias: PropTypes.func.isRequired,
   getSubcategorias: PropTypes.func.isRequired,
-  isFetching: PropTypes.bool.isRequired
+  isFetching: PropTypes.bool.isRequired,
+  notifyUser: PropTypes.func.isRequired,
+  notify: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
+  notify: state.notify,
   categorias: state.producto.categorias,
   subcategorias: state.producto.subcategorias,
   isFetching: loadingSelector(state),
@@ -135,5 +191,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getCategorias, getSubcategorias }
+  { getCategorias, notifyUser, getSubcategorias }
 )(OrganizarCategorias);

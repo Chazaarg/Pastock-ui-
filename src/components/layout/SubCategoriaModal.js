@@ -50,58 +50,56 @@ class SubCategoriaModal extends Component {
     const { addSubCategoria, newProp } = this.props;
     const newSubCategoria = {
       nombre,
-      categoria: categoria.id
+      categoria: categoria.id ? categoria.id : this.props.categoria.id
     };
 
     //Añadir subCategoria
 
     addSubCategoria(newSubCategoria).then(() => {
       //Si no hay error
-      if (this.props.notify.messageType === "success") {
-        //Selecciona la categoria de la nueva subcategoria.
-        newProp("categoria", categoria);
-        //Selecciona la nueva sub_categoria en el DOM.
-        this.props.newProp("sub_categoria");
-        this.toggle();
-      }
-      //Si hay error, verifico. Uso el state para personalizar el Select
-      else {
-        if (this.props.notify.errors) {
-          this.props.notify.errors.forEach(error => {
-            if (error.value === "categoria") {
-              this.setState({
-                selectStyle: {
-                  control: (base, state) => ({
-                    ...base,
-                    borderColor: "red"
+      if (this.props.notify) {
+        if (this.props.notify.messageType === "success") {
+          //Selecciona la categoria de la nueva subcategoria.
+          newProp("categoria", categoria);
+          //Selecciona la nueva sub_categoria en el DOM.
+          this.props.newProp("sub_categoria");
+          this.toggle();
+        }
+        //Si hay error, verifico. Uso el state para personalizar el Select
+        else {
+          if (this.props.notify.errors) {
+            this.props.notify.errors.forEach(error => {
+              if (error.value === "categoria") {
+                this.setState({
+                  selectStyle: {
+                    control: (base, state) => ({
+                      ...base,
+                      borderColor: "red"
+                    })
+                  },
+                  selectTheme: theme => ({
+                    ...theme,
+                    borderRadius: 0,
+                    colors: {
+                      ...theme.colors,
+                      primary: "red"
+                    }
                   })
-                },
-                selectTheme: theme => ({
-                  ...theme,
-                  borderRadius: 0,
-                  colors: {
-                    ...theme.colors,
-                    primary: "red"
-                  }
-                })
-              });
-            }
-          });
+                });
+              }
+            });
+          }
         }
       }
     });
   };
 
   render() {
-    const { optionsCategoria } = this.props;
+    const { optionsCategoria, btnClass } = this.props;
 
     return (
       <div>
-        <button
-          type="button"
-          className="text-secondary btn btn-link"
-          onClick={this.toggle}
-        >
+        <button type="button" className={btnClass} onClick={this.toggle}>
           <small>Añadir nueva subCategoria</small>
         </button>
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
@@ -112,12 +110,14 @@ class SubCategoriaModal extends Component {
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
                 <Label for="categoria">Categoria de la que es anidada</Label>
-
                 <Select
                   name="categoria"
                   value={
                     this.state.categoria.id === undefined
-                      ? null
+                      ? {
+                          value: this.props.categoria.id,
+                          label: this.props.categoria.nombre
+                        }
                       : {
                           label: this.state.categoria.label,
                           value: this.state.categoria.id

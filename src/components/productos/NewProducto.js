@@ -343,7 +343,8 @@ NewProducto.propTypes = {
   varianteTipos: PropTypes.array.isRequired,
   addProducto: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
-  notifyUser: PropTypes.func.isRequired
+  notifyUser: PropTypes.func.isRequired,
+  notify: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({

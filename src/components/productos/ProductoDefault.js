@@ -17,7 +17,6 @@ const ProductoDefault = props => {
     onChange,
     newProp,
     notify,
-    handleChange,
     handleMarcaChange,
     handleCategoriaChange,
     handleSubcategoriaChange
@@ -98,7 +97,11 @@ const ProductoDefault = props => {
                 options={optionsCategoria}
                 placeholder="Seleccione una categoria..."
               />
-              <CategoriaModal newProp={newProp.bind(this)} notify={notify} />
+              <CategoriaModal
+                newProp={newProp.bind(this)}
+                notify={notify}
+                btnClass="text-secondary btn btn-link"
+              />
             </div>
             <div className="form-group col-md-4">
               <Select
@@ -117,10 +120,11 @@ const ProductoDefault = props => {
                 placeholder="Seleccione una sub categoria..."
               />
               <SubCategoriaModal
+                categoria={categoria}
                 newProp={newProp.bind(this)}
                 notify={notify}
-                handleChange={handleChange.bind(this)}
                 optionsCategoria={optionsCategoria}
+                btnClass="text-secondary btn btn-link"
               />
             </div>
           </div>
