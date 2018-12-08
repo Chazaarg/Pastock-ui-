@@ -13,7 +13,11 @@ import {
   FETCH_VARIANTETIPOS,
   UPDATE_PRODUCTO,
   DELETE_PRODUCTO,
-  ADD_VARIANTETIPO
+  ADD_VARIANTETIPO,
+  UPDATE_CATEGORIA,
+  UPDATE_SUBCATEGORIA,
+  UPDATE_MARCA,
+  DELETE_MARCA
 } from "../actions/types.js";
 
 const initState = {
@@ -64,6 +68,18 @@ export default function(state = initState, action) {
         ...state,
         marcas: [action.payload, ...state.marcas]
       };
+    case DELETE_MARCA:
+      return {
+        ...state,
+        marcas: state.marcas.filter(marca => marca.id !== action.payload)
+      };
+    case UPDATE_MARCA:
+      return {
+        ...state,
+        marcas: state.marcas.map(marca =>
+          marca.id === action.payload.id ? (marca = action.payload) : marca
+        )
+      };
     case ADD_VARIANTETIPO:
       return {
         ...state,
@@ -84,12 +100,20 @@ export default function(state = initState, action) {
         ...state,
         categorias: action.payload
       };
-
     case DELETE_CATEGORIA:
       return {
         ...state,
         categorias: state.categorias.filter(
           categoria => categoria.id !== action.payload
+        )
+      };
+    case UPDATE_CATEGORIA:
+      return {
+        ...state,
+        categorias: state.categorias.map(categoria =>
+          categoria.id === action.payload.id
+            ? (categoria = action.payload)
+            : categoria
         )
       };
     case FETCH_SUBCATEGORIAS:
@@ -107,6 +131,15 @@ export default function(state = initState, action) {
         ...state,
         subcategorias: state.subcategorias.filter(
           subcategoria => subcategoria.id !== action.payload
+        )
+      };
+    case UPDATE_SUBCATEGORIA:
+      return {
+        ...state,
+        subcategorias: state.subcategorias.map(subcategoria =>
+          subcategoria.id === action.payload.id
+            ? (subcategoria = action.payload)
+            : subcategoria
         )
       };
     case FETCH_VARIANTETIPOS:

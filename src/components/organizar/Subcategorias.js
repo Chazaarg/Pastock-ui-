@@ -1,6 +1,7 @@
 import React from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import ToolkitProvider from "react-bootstrap-table2-toolkit";
+import cellEditFactory from "react-bootstrap-table2-editor";
 
 import SubCategoriaModal from "../layout/SubCategoriaModal";
 
@@ -11,7 +12,8 @@ const Subcategorias = props => {
     categorias,
     newProp,
     notify,
-    deleteSubcategoria
+    deleteSubcategoria,
+    updateSubcategoria
   } = props;
 
   let { subcategorias } = props;
@@ -60,6 +62,24 @@ const Subcategorias = props => {
     );
   };
 
+  const editCell = (newValue, row, column, done) => {
+    if (newValue === "") {
+      return {
+        valid: false,
+        message: "Este campo es requerido."
+      };
+    }
+
+    if (updateSubcategoria({ nombre: newValue, id: row.id })) {
+      return true;
+    }
+
+    return {
+      valid: false,
+      message: "Lo sentimos, ha habido un error."
+    };
+  };
+
   const columns = [
     {
       dataField: "nombre",
@@ -67,7 +87,8 @@ const Subcategorias = props => {
         ? "Subcategorias - " + categoria.nombre + "  "
         : "Subcategorias - ",
       sort: true,
-      formatter: nombreFormatter
+      formatter: nombreFormatter,
+      validator: editCell
     }
   ];
 
@@ -87,7 +108,14 @@ const Subcategorias = props => {
         columns={columns}
         bootstrap4={true}
       >
-        {props => <BootstrapTable {...props.baseProps} />}
+        {props => (
+          <BootstrapTable
+            {...props.baseProps}
+            cellEdit={cellEditFactory({
+              mode: "dbclick"
+            })}
+          />
+        )}
       </ToolkitProvider>
       <SubCategoriaModal
         newProp={newProp}

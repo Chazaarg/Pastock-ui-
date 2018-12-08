@@ -12,7 +12,9 @@ import {
   getCategorias,
   deleteCategoria,
   getSubcategorias,
-  deleteSubcategoria
+  deleteSubcategoria,
+  updateCategoria,
+  updateSubcategoria
 } from "../../actions/productosActions";
 import Categorias from "./Categorias";
 import ProductoAlert from "../layout/ProductoAlert";
@@ -33,15 +35,6 @@ class OrganizarCategorias extends Component {
     const { notifyUser } = this.props;
 
     message && notifyUser(null, null, null);
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    const { loading } = props;
-    //Cuando se sale, le asigno false a FETCH_PRODUCTOS, para que vuelva a cargar la página al volver.
-    if (loading.FETCH_CATEGORIAS) {
-      return (loading["NOTIFY_USER"] = false);
-    }
-    return state;
   }
 
   closeNav = () => {
@@ -117,7 +110,9 @@ class OrganizarCategorias extends Component {
       subcategorias,
       notify,
       deleteSubcategoria,
-      deleteCategoria
+      deleteCategoria,
+      updateCategoria,
+      updateSubcategoria
     } = this.props;
     const sideNavContainerChildren = document.querySelector(
       "#sideNavContainer div"
@@ -175,6 +170,8 @@ class OrganizarCategorias extends Component {
               deleteSubcategoria={deleteSubcategoria.bind(this)}
               deleteCategoria={deleteCategoria.bind(this)}
               notifyUser={this.props.notifyUser.bind(this)}
+              updateCategoria={updateCategoria.bind(this)}
+              updateSubcategoria={updateSubcategoria.bind(this)}
             />
           </Loader>
         </div>
@@ -190,6 +187,8 @@ const loadingSelector = createLoadingSelector([
 OrganizarCategorias.propTypes = {
   getCategorias: PropTypes.func.isRequired,
   deleteCategoria: PropTypes.func.isRequired,
+  updateCategoria: PropTypes.func.isRequired,
+  updateSubcategoria: PropTypes.func.isRequired,
   getSubcategorias: PropTypes.func.isRequired,
   deleteSubcategoria: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
@@ -212,6 +211,8 @@ export default connect(
     notifyUser,
     getSubcategorias,
     deleteSubcategoria,
-    deleteCategoria
+    deleteCategoria,
+    updateCategoria,
+    updateSubcategoria
   }
 )(OrganizarCategorias);

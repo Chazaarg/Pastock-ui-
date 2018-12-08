@@ -1,6 +1,7 @@
 import React from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import ToolkitProvider from "react-bootstrap-table2-toolkit";
+import cellEditFactory from "react-bootstrap-table2-editor";
 
 import Subcategorias from "./Subcategorias";
 
@@ -13,7 +14,9 @@ const Categorias = props => {
     closeNav,
     openNav,
     deleteSubcategoria,
+    updateSubcategoria,
     deleteCategoria,
+    updateCategoria,
     notifyUser,
     newProp,
     notify
@@ -58,13 +61,41 @@ const Categorias = props => {
     );
   };
 
+  const editCell = (newValue, row, column, done) => {
+    if (newValue === "") {
+      return {
+        valid: false,
+        message: "Este campo es requerido."
+      };
+    }
+    let categoriaExistente;
+    categorias.forEach(categoria => {
+      if (categoria.nombre.toLowerCase() === newValue.toLowerCase()) {
+        categoriaExistente = {
+          valid: false,
+          message: "Esta categoría ya existe."
+        };
+      }
+    });
+    if (categoriaExistente) return categoriaExistente;
+
+    if (updateCategoria({ nombre: newValue, id: row.id })) {
+      return true;
+    }
+
+    return {
+      valid: false,
+      message: "Lo sentimos, ha habido un error."
+    };
+  };
   const columns = [
     {
       dataField: "nombre",
       text: "Nombre",
       sort: true,
       formatter: nombreFormatter,
-      headerAlign: (column, colIndex) => "center"
+      headerAlign: (column, colIndex) => "center",
+      validator: editCell
     }
   ];
 
@@ -77,7 +108,14 @@ const Categorias = props => {
           columns={columns}
           bootstrap4={true}
         >
-          {props => <BootstrapTable {...props.baseProps} />}
+          {props => (
+            <BootstrapTable
+              {...props.baseProps}
+              cellEdit={cellEditFactory({
+                mode: "dbclick"
+              })}
+            />
+          )}
         </ToolkitProvider>
       </div>
       <div className="col-6 float-right pl-0" id="sideNavContainer">
@@ -93,6 +131,7 @@ const Categorias = props => {
             notifyUser={notifyUser}
             newProp={newProp}
             notify={notify}
+            updateSubcategoria={updateSubcategoria}
           />
         </div>
       </div>

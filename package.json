@@ -8,6 +8,7 @@
     "classnames": "^2.2.6",
     "react": "^16.5.2",
     "react-bootstrap-table-next": "^1.4.1",
+    "react-bootstrap-table2-editor": "^1.2.2",
     "react-bootstrap-table2-paginator": "^1.0.4",
     "react-bootstrap-table2-toolkit": "^1.1.1",
     "react-dom": "^16.5.2",

@@ -75,7 +75,11 @@ const ProductoDefault = props => {
                 options={optionsMarca}
                 placeholder="Seleccione una marca..."
               />
-              <MarcaModal newProp={newProp.bind(this)} notify={notify} />
+              <MarcaModal
+                newProp={newProp.bind(this)}
+                notify={notify}
+                btnClass="text-secondary btn btn-link float-right"
+              />
             </div>
           </div>
         </div>

@@ -14,7 +14,11 @@ import {
   DELETE_PRODUCTO,
   ADD_VARIANTETIPO,
   NOTIFY_USER,
-  DELETE_CATEGORIA
+  DELETE_CATEGORIA,
+  UPDATE_CATEGORIA,
+  UPDATE_SUBCATEGORIA,
+  UPDATE_MARCA,
+  DELETE_MARCA
 } from "./types";
 import axios from "axios";
 
@@ -122,6 +126,33 @@ export const deleteCategoria = id => async dispatch => {
   });
 };
 
+export const updateCategoria = categoria => async dispatch => {
+  try {
+    const res = await axios.put(
+      `/categoria/${categoria.id}/edit`,
+      categoria.nombre
+    );
+    dispatch({
+      type: UPDATE_CATEGORIA,
+      payload: res.data.categoria
+    });
+    //Success
+    dispatch({
+      type: NOTIFY_USER,
+      errors: null,
+      message: res.data.message,
+      messageType: res.data.messageType
+    });
+  } catch (error) {
+    dispatch({
+      type: NOTIFY_USER,
+      message: error.response.data.message,
+      messageType: error.response.data.messageType,
+      errors: error.response.data.errors
+    });
+  }
+};
+
 export const getSubcategorias = () => async dispatch => {
   const res = await axios.get("/subcategoria");
 
@@ -163,11 +194,69 @@ export const addSubCategoria = subCategoria => async dispatch => {
   }
 };
 
+export const updateSubcategoria = subcategoria => async dispatch => {
+  try {
+    const res = await axios.put(
+      `/subcategoria/${subcategoria.id}/edit`,
+      subcategoria.nombre
+    );
+    dispatch({
+      type: UPDATE_SUBCATEGORIA,
+      payload: res.data.subcategoria
+    });
+    //Success
+    dispatch({
+      type: NOTIFY_USER,
+      errors: null,
+      message: res.data.message,
+      messageType: res.data.messageType
+    });
+  } catch (error) {
+    dispatch({
+      type: NOTIFY_USER,
+      message: error.response.data.message,
+      messageType: error.response.data.messageType,
+      errors: error.response.data.errors
+    });
+  }
+};
 export const addMarca = marca => async dispatch => {
   try {
     const res = await axios.post("/marca/new", marca);
     dispatch({
       type: ADD_MARCA,
+      payload: res.data.marca
+    });
+    //Success
+    dispatch({
+      type: NOTIFY_USER,
+      errors: null,
+      message: res.data.message,
+      messageType: res.data.messageType
+    });
+  } catch (error) {
+    dispatch({
+      type: NOTIFY_USER,
+      message: error.response.data.message,
+      messageType: error.response.data.messageType,
+      errors: error.response.data.errors
+    });
+  }
+};
+
+export const deleteMarca = id => async dispatch => {
+  await axios.delete(`/marca/${id}`);
+  dispatch({
+    type: DELETE_MARCA,
+    payload: id
+  });
+};
+
+export const updateMarca = marca => async dispatch => {
+  try {
+    const res = await axios.put(`/marca/${marca.id}/edit`, marca.nombre);
+    dispatch({
+      type: UPDATE_MARCA,
       payload: res.data.marca
     });
     //Success

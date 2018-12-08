@@ -148,6 +148,8 @@ const ProductoAlert = props => {
   //Para los Modal
   else if (messageType === "success") {
     return <div className="alert alert-success">{message}</div>;
+  } else if (messageType === "warning") {
+    return <div className="alert alert-warning">{message}</div>;
   } else {
     return null;
   }
