@@ -33,6 +33,11 @@ class AppNavbar extends Component {
                     </Link>
                   </li>
                   <li className="nav-item">
+                    <Link to="/caja" className="nav-link">
+                      Caja
+                    </Link>
+                  </li>
+                  <li className="nav-item">
                     <Link to="/marca" className="nav-link">
                       Organizar Marcas
                     </Link>

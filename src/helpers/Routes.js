@@ -18,6 +18,7 @@ import Login from "../components/pages/Login";
 import OrganizarMarcas from "../components/organizar/OrganizarMarcas";
 import OrganizarCategorias from "../components/organizar/OrganizarCategorias";
 import Register from "../components/pages/Register";
+import Caja from "../components/caja/Caja";
 import { getUsuario } from "../actions/usuarioActions";
 
 class Routes extends Component {
@@ -77,6 +78,7 @@ class Routes extends Component {
           <AppNavbar isAuthenticated={isAuthenticated} usuario={usuario} />
           <div className="container">
             <Switch>
+              <PrivateRoute exact path="/caja" component={Caja} />
               <PrivateRoute
                 exact
                 path="/producto/:id/show" //El /show no tendría que estar.
